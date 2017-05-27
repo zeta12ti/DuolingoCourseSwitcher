@@ -12,19 +12,9 @@
 // ==/UserScript==
 
 var duo = unsafeWindow.duo;
-var _   = unsafeWindow._;
-
-// Contains the submenus for the switcher (no name changes needed)
-// Selector is invalid sometimes? - Ignore for now
-// /words uses the old style - that's why it worked there
-// doesn't work at all for the new style
-document.head.appendChild($('<style type="text/css">'+
-    '.language-sub-courses {position:absolute; top:-28px !important; color:#000; background-color: #fff; min-width: 150px; min-height: 50px; display: none !important;}'+
-    'html[dir="ltr"] .language-sub-courses {left:200px !important;}'+
-    'html[dir="rtl"] .language-sub-courses {right:200px !important;}'+
-    '</style>').get(0));
 
 // Just contains translations of 'from' (no changes)
+// possibly add equivalent for 'level' translations rather than the ad-hoc scraping
 var header1 = JSON.parse('{"dn": "van", "sv": "fr\\u00e5n", "fr": "de", "hu": "-b\\u00f3l", "eo": "de", "tr": "-den", "es": "desde", "ro": "din", "ja": "\\u304b\\u3089", "vi": "t\\u1eeb", "it": "da", "he": "\\u05de", "el": "\\u03b1\\u03c0\\u03cc", "ru": "\\u0441", "ar": "\\u0645\\u0646", "en": "from", "ga": "\\u00f3", "cs": "od", "pt": "de", "de": "von", "zs": "\\u5f9e", "pl": "z"}');
 
 // Just uses the api (no changes)
