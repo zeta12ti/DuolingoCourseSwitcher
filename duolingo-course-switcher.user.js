@@ -5,10 +5,9 @@
 // @include     https://www.duolingo.com/*
 // @downloadURL https://github.com/zeta12ti/DuolingoCourseSwitcher/raw/master/duolingo-course-switcher.user.js
 // @updateURL   https://github.com/zeta12ti/DuolingoCourseSwitcher/raw/master/duolingo-course-switcher.user.js
-// @version     0.9.0
+// @version     0.9.1
 // @require     http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js
 // @grant       GM_getValue
-// @grant       GM_setValue
 // @author      arekolek, mofman, gmelikov, christeefury, guillaumebrunerie, zeta12ti
 // ==/UserScript==
 
