@@ -14,26 +14,23 @@
 // NOTES:
 // document.querySelector instead of jquery.
 
+var duo = unsafeWindow.duo; // Can I avoid this?
+GM_log(duo.l10n.declared[224]);
+
+// duo is very different from before.
+// interesting things:
+// duo.l10n.declared[183] is level (niveau)
+// duo.l10n.declared[224] includes the number, 335 all caps
+// course info might not be stored at all.
+
+// May have to intercept xhr response (from the api)
+
 // Works!
 function removeElement(query) {
-    element = document.querySelector(query)
+    element = document.querySelector(query);
     element.parentNode.removeChild(element);
 }
 
 // removeElement('._20LC5')
 
-// Uses the duo variable to update courses (no changes)
-// Should see if I can fix the bloating of the greasemonkey storage
-function updateCourses(A) {
-    if(localStorage.getItem('dcs_courses') && !GM_getValue('dcs_courses')){
-      // switch to greasemonkey storage
-      GM_deleteValue('dcs_courses')
-      GM_setValue('dcs_courses', localStorage.getItem('dcs_courses'));
-    }
-    var courses = JSON.parse(GM_getValue('dcs_courses', '{}'));
-    var learning = [].filter.call(A.languages, function(lang){ return lang.learning; });
-    courses[A.ui_language] = learning.map(function(lang){ return _(lang).pick('language', 'level'); });
-    GM_deleteValue('dcs_courses')
-    GM_setValue('dcs_courses', JSON.stringify(courses));
-    return courses;
-}
+
