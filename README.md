@@ -13,7 +13,7 @@ There is a [discussion thread dedicated to this script](https://www.duolingo.com
  * Chromium: [Tampermonkey](https://chrome.google.com/webstore/detail/tampermonkey/dhdgffkkebhmkfjojejmpbldmpobfkfo?hl=en)
  * Firefox: [Greasemonkey](https://addons.mozilla.org/en-US/firefox/addon/greasemonkey/)
  * Safari: [JavaScript Blocker](http://javascript-blocker.toggleable.com/)
-2. Click [here](https://github.com/arekolek/DuolingoCourseSwitcher/raw/master/duolingo-course-switcher.user.js) to install the userscript.
+2. Click [here](https://github.com/zeta12ti/DuolingoCourseSwitcher/raw/master/duolingo-course-switcher.user.js) to install the userscript.
 3. Confirm the installation when prompted.
 
 ### Usage
