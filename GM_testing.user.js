@@ -2,30 +2,41 @@
 // @name        GM_testing
 // @description Simplifies switching between courses that use different interface language (i.e., base language, the language from which you learn).
 // @namespace   https://github.com/zeta12ti/Duolingo-Course-Switcher
-// @grant GM_log
-// @grant GM_getValue
-// @grant GM_setValue
-// @grant GM_deleteValue
 // @include https://*.duolingo.com/*
-// @version     0.1
+// @grant none
+// @version     0.2
 // @author      zeta12ti
 // ==/UserScript==
 
 // NOTES:
 // document.querySelector instead of jquery.
 
-var duo = unsafeWindow.duo; // Can I avoid this?
-GM_log(duo.l10n.declared[224]);
+// localStorage['duo.state'] contains a ton of good data
+// I need to find out when it's updated
+
+// It *looks* like all course info is stored in duo.state. No need for setting values?
+
+var duoState = JSON.parse(localStorage['duo.state'])
 
 // duo is very different from before.
 // interesting things:
 // duo.l10n.declared[183] is level (niveau)
 // duo.l10n.declared[224] includes the number, 335 all caps
-// course info might not be stored at all.
+// (checked in english and french)
+// 122, 142
 
-// May have to intercept xhr response (from the api)
+// Language names (in english)
+var languages = JSON.parse('{"ar": "Arabic", "bn": "Bengali", "ca": "Catalan", "cs": "Czech", "cy": "Welsh", "da": "Danish", "de": "German", "el": "Greek", "en": "English", "eo": "Esperanto", "es": "Spanish", "fr": "French", "ga": "Irish", "gn": "Guarani (Jopar\\u00e1)", "he": "Hebrew", "hi": "Hindi", "hu": "Hungarian", "id": "Indonesian", "it": "Italian", "ja": "Japanese", "ko": "Korean", "nl-NL": "Dutch", "no-BO": "Norwegian (Bokm\\u00e5l)", "pa": "Punjabi (Gurmukhi)", "pl": "Polish", "pt": "Portuguese", "ro": "Romanian", "ru": "Russian", "sv": "Swedish", "sw": "Swahili", "ta": "Tamil", "te": "Telugu", "th": "Thai", "tl": "Tagalog", "tlh": "Klingon", "tr": "Turkish", "uk": "Ukrainian", "vi": "Vietnamese", "zh-CN": "Chinese"}')
 
-// Works!
+function getLanguage(languageCode) {
+    if (languageCode in languages) {
+        return languages[languageCode]
+    } else {
+        return "Unknown"
+    }
+}
+
+// Removes a css node by its css selector
 function removeElement(query) {
     element = document.querySelector(query);
     element.parentNode.removeChild(element);
@@ -33,4 +44,52 @@ function removeElement(query) {
 
 // removeElement('._20LC5')
 
+// calculates the level given the experience
+function xpToLevel ( xp ) {
+    var xpLevelCutoffs = duoState.config.xpLevelCutoffs
+    var level = 1;
+    var length = xpLevelCutoffs.length;
+    for (var i = 0; i < length; i++) {
+        if (xp < xpLevelCutoffs[i]) {
+            return level;
+        } else {
+            level++;
+        }
+    }
+    return level;
+}
 
+// Gets information about all currently learning courses from duo.state
+function getCourseInfo() {
+    var courses = duoState.courses;
+    var coursesOrganized = {};
+
+    for (var course in courses) {
+        if (courses.hasOwnProperty(course)) {
+            var from = courses[course].fromLanguage;
+            var learning = courses[course].learningLanguage;
+            var xp = courses[course].xp;
+            var level = xpToLevel(xp);
+
+            if (!(from in coursesOrganized)) {
+                coursesOrganized[from] = []
+            }
+            coursesOrganized[from].push({'from': from,
+                                         'from_string': getLanguage(from),
+                                         'learning': learning,
+                                         'learning_string': getLanguage(learning),
+                                         'xp': xp,
+                                         'level': level
+                                         });
+        }
+    }
+    return coursesOrganized;
+}
+
+
+// Takes an argument of the form given by the output of getCourseInfo
+// Sorts from languages by number of courses and learning languages by xp.
+function sortCourseInfo(courses) {
+    sortedLanguages = keys(courses).sort(function(a, b) { return courses[b].length - courses[a].length });
+    return sortedLanguages.map(function(a) { return courses[a].sort(function(b,c) { return c.xp - b.xp; } );});
+}
