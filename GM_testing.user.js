@@ -46,7 +46,7 @@ var duo = window.duo // no need to use unsecureWindow, since we don't grant anyt
 
 // Language names (in english) - for use with duo.l10n.undeclared
 // extracted from https://duolingo.com/api/1/courses/list
-var languages = JSON.parse('{"ar": "Arabic", "bn": "Bengali", "ca": "Catalan", "cs": "Czech", "cy": "Welsh", "da": "Danish", "de": "German", "el": "Greek", "en": "English", "eo": "Esperanto", "es": "Spanish", "fr": "French", "ga": "Irish", "gn": "Guarani (Jopar\\u00e1)", "he": "Hebrew", "hi": "Hindi", "hu": "Hungarian", "id": "Indonesian", "it": "Italian", "ja": "Japanese", "ko": "Korean", "nl-NL": "Dutch", "no-BO": "Norwegian (Bokm\\u00e5l)", "pa": "Punjabi (Gurmukhi)", "pl": "Polish", "pt": "Portuguese", "ro": "Romanian", "ru": "Russian", "sv": "Swedish", "sw": "Swahili", "ta": "Tamil", "te": "Telugu", "th": "Thai", "tl": "Tagalog", "tlh": "Klingon", "tr": "Turkish", "uk": "Ukrainian", "vi": "Vietnamese", "zh-CN": "Chinese"}')
+var languages = {"ar": "Arabic", "bn": "Bengali", "ca": "Catalan", "cs": "Czech", "cy": "Welsh", "da": "Danish", "de": "German", "el": "Greek", "en": "English", "eo": "Esperanto", "es": "Spanish", "fr": "French", "ga": "Irish", "gn": "Guarani (Jopar\\u00e1)", "he": "Hebrew", "hi": "Hindi", "hu": "Hungarian", "id": "Indonesian", "it": "Italian", "ja": "Japanese", "ko": "Korean", "nl-NL": "Dutch", "no-BO": "Norwegian (Bokm\\u00e5l)", "pa": "Punjabi (Gurmukhi)", "pl": "Polish", "pt": "Portuguese", "ro": "Romanian", "ru": "Russian", "sv": "Swedish", "sw": "Swahili", "ta": "Tamil", "te": "Telugu", "th": "Thai", "tl": "Tagalog", "tlh": "Klingon", "tr": "Turkish", "uk": "Ukrainian", "vi": "Vietnamese", "zh-CN": "Chinese"}
 
 function getLanguageString(languageCode) {
     if (languageCode in languages) {
@@ -59,7 +59,7 @@ function getLanguageString(languageCode) {
 // language flags - extracted from https://d35aaqx5ub95lt.cloudfront.net/js/app-5dfdd9c3.js
 // keys: remove flag- prefix and keep consistency - zs -> zh-CN, kl -> tlh, (zs -> zh-¿?)
 // It appears that the strings are used as part of the class name.
-var flags=JSON.parse('{"ar": "_1ARRD _3viv6", "bn": "_2TXAL _3viv6", "ca": "mc4rg _3viv6", "cs": "_1uPQW _3viv6", "cy": "_1jO8h _3viv6", "da": "_1h0xh _3viv6", "de": "oboa9 _3viv6", "dk": "_3AA1F _3viv6", "el": "_2tQo9 _3viv6", "en": "_2cR-E _3viv6", "eo": "pWj0w _3viv6", "es": "u5W-o _3viv6", "fr": "_2KQN3 _3viv6", "ga": "_1vhNM _3viv6", "gn": "_24xu4 _3viv6", "he": "_PDrK _3viv6", "hi": "OgUIe _3viv6", "hu": "_1S3hi _3viv6", "id": "_107sn _3viv6", "it": "_1PruQ _3viv6", "ja": "_2N-Uj _3viv6", "ko": "_2lkzc _3viv6", "nl-NL": "_1fajz _3viv6", "no-BO": "_200jU _3viv6", "pl": "_3uusw _3viv6", "pt": "pmGwL _3viv6", "ro": "_12U6e _3viv6", "ru": "_1eqxJ _3viv6", "sn": "q_PD- _3viv6", "sv": "_2DMfV _3viv6", "sw": "_3T1km _3viv6", "th": "_2oTcA _3viv6", "tl": "_1q_MQ _3viv6", "tlh": "_6mRM _3viv6", "tr": "_1tJJ2 _3viv6", "uk": "_1zZsN _3viv6", "un": "t-XH- _3viv6", "vi": "_1KtzC _3viv6", "zh": "xi6jQ _3viv6", "zh-CN": "_2gNgd _3viv6", "_circle-flag": "_2XSZu", "_flag": "_3viv6", "medium-circle-flag": "_1ct7y _2XSZu", "micro-circle-flag": "_3i5IF _2XSZu", "small-circle-flag": "_3PU7E _2XSZu"}');
+var flags={"ar": "_1ARRD _3viv6", "bn": "_2TXAL _3viv6", "ca": "mc4rg _3viv6", "cs": "_1uPQW _3viv6", "cy": "_1jO8h _3viv6", "da": "_1h0xh _3viv6", "de": "oboa9 _3viv6", "dk": "_3AA1F _3viv6", "el": "_2tQo9 _3viv6", "en": "_2cR-E _3viv6", "eo": "pWj0w _3viv6", "es": "u5W-o _3viv6", "fr": "_2KQN3 _3viv6", "ga": "_1vhNM _3viv6", "gn": "_24xu4 _3viv6", "he": "_PDrK _3viv6", "hi": "OgUIe _3viv6", "hu": "_1S3hi _3viv6", "id": "_107sn _3viv6", "it": "_1PruQ _3viv6", "ja": "_2N-Uj _3viv6", "ko": "_2lkzc _3viv6", "nl-NL": "_1fajz _3viv6", "no-BO": "_200jU _3viv6", "pl": "_3uusw _3viv6", "pt": "pmGwL _3viv6", "ro": "_12U6e _3viv6", "ru": "_1eqxJ _3viv6", "sn": "q_PD- _3viv6", "sv": "_2DMfV _3viv6", "sw": "_3T1km _3viv6", "th": "_2oTcA _3viv6", "tl": "_1q_MQ _3viv6", "tlh": "_6mRM _3viv6", "tr": "_1tJJ2 _3viv6", "uk": "_1zZsN _3viv6", "un": "t-XH- _3viv6", "vi": "_1KtzC _3viv6", "zh": "xi6jQ _3viv6", "zh-CN": "_2gNgd _3viv6", "_circle-flag": "_2XSZu", "_flag": "_3viv6", "medium-circle-flag": "_1ct7y _2XSZu", "micro-circle-flag": "_3i5IF _2XSZu", "small-circle-flag": "_3PU7E _2XSZu"}
 
 function getLanguageFlag(languageCode) {
     if (languageCode in flags) {
@@ -175,7 +175,7 @@ function constructMenu(courses, fromLang, toLang) {
 
     var header = document.createElement("li")
     header.setAttribute('class', '_2PurW')
-    header.innerHTML = '<h6>' + duo.l10n.declared[142] + '</h6>'
+    header.innerHTML = '<h6>' + duo.l10n.declared[142] + '</h6>' // Langues
     topMenu.appendChild(header)
 
     var courseList = document.createElement('ul')
@@ -186,7 +186,10 @@ function constructMenu(courses, fromLang, toLang) {
     for (var i=0; i<courseLength; i++) {
         var sourceLang = document.createElement('li')
         var className = '_2kNgI _1qBnH'
-        if (courses[i][0].from == fromLang) { className = '_1oVFS ' + className }
+        if (courses[i][0].from == fromLang) {
+            className = '_1oVFS ' + className
+            sourceLang.style.cursor = 'pointer' // the current lang is automatically not given a pointer
+        }
         sourceLang.setAttribute('class', className)
 
         var flag = document.createElement('span')
@@ -199,11 +202,11 @@ function constructMenu(courses, fromLang, toLang) {
         sourceLang.appendChild(document.createTextNode(localizedLanguageName))
 
         var targetLangMenu = document.createElement('ul')
-        targetLangMenu.setAttribute('class', '_20LC5 FUNrE _3w0_r OSaWc _2HujR _1ZY-H')
+        targetLangMenu.setAttribute('class', '_20LC5 FUNrE _3w0_r OSaWc _2HujR _1ZY-H') // same as top level menu, but style it as a dropdown-menu too
 
         var subheader = document.createElement("li")
         subheader.setAttribute('class', '_2PurW')
-        subheader.innerHTML = '<h6>' + duo.l10n.declared[147] + '</h6>'
+        subheader.innerHTML = '<h6>' + duo.l10n.declared[147] + '</h6>' // J'apprends
         targetLangMenu.appendChild(subheader)
 
         var subCourseList = document.createElement('ul')
@@ -214,7 +217,11 @@ function constructMenu(courses, fromLang, toLang) {
         for (var j=0; j<subCourseLength; j++) {
             var targetLang = document.createElement('li')
             className = '_2kNgI _1qBnH'
-            if (courses[i][j].learning == toLang) {className = '_1oVFS ' + className}
+            var currentCourse = false // True if course[i][j] is the current course
+            if (courses[i][j].from == fromLang && courses[i][j].learning == toLang) {
+                className = '_1oVFS ' + className
+                currentCourse = true 
+            }
             targetLang.setAttribute('class', className)
 
             var subFlag = document.createElement('span')
@@ -228,7 +235,7 @@ function constructMenu(courses, fromLang, toLang) {
 
             var levelText = document.createElement('span')
             levelText.setAttribute('class', '_1fA14')
-            levelText.innerHTML = duo.l10n.declared[183] + ' ' + courses[i][j].level
+            levelText.innerHTML = duo.l10n.declared[183] + ' ' + courses[i][j].level // niveau
             targetLang.appendChild(levelText)
         }
 
@@ -239,6 +246,7 @@ function constructMenu(courses, fromLang, toLang) {
     divider.setAttribute('class', 'qsrrc')
     topMenu.appendChild(divider)
 
+    // For mobile support I guess. I don't have high expectations.
     var mobileAddCourse = document.createElement('li')
     mobileAddCourse.setAttribute('class', '_2nd4- _1qBnH')
 
@@ -248,25 +256,19 @@ function constructMenu(courses, fromLang, toLang) {
     mobileLink.innerText = '+'
     mobileAddCourse.appendChild(mobileLink)
 
-    mobileAddCourse.appendChild(document.createTextNode(duo.l10n.declared[179]))
+    mobileAddCourse.appendChild(document.createTextNode(duo.l10n.declared[179])) // Ajouter un cours
     topMenu.appendChild(mobileAddCourse)
 
     var addNewCourse = document.createElement('li')
     addNewCourse.setAttribute('class', '_2uBp_ _1qBnH')
-    addNewCourse.innerText = duo.l10n.declared[178]
+    addNewCourse.innerText = duo.l10n.declared[178] // Ajouter un nouveau cours
     topMenu.appendChild(addNewCourse)
 
-
-        // add item for from language (flag, language name)
-        // current has gray background
-        // add on (mouseover) (maybe after adding submenu)
-        // add submenu
-            // set header (J'apprends)
-            // loop over sub courses
-                // add item for learning language (flag, language name, level)
-                // current has grey background
-                // include fromLang, toLang as attributes ?
-                // add onClick
-    // add Ajouter un nouveau cours
-
+    // TODO: add link/action for ajouter un nouveau cours - to full course page (could just make it a regular link...kinda dumb)
+    // add onMouseOver for top menu - make sub menu appear in the right spot (will require adding the style for the menu since it's not part of the normal site - oy - Old version looks pretty good)
+    // add on click for sub menu - switch courses
+    // add variable to check if we've already done what we need to
+    // (may just change the menu once when the page loads)
+    // and that's pretty much it
+    // clean up code
 }
