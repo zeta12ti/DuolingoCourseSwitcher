@@ -186,11 +186,11 @@ function constructMenu(courses, fromLang, toLang) {
     for (var i=0; i<courseLength; i++) {
         var sourceLang = document.createElement('li')
         var className = '_2kNgI _1qBnH'
-        if (courses[i][0].from == fromLang) { className = '_1oVFS' + className }
+        if (courses[i][0].from == fromLang) { className = '_1oVFS ' + className }
         sourceLang.setAttribute('class', className)
 
         var flag = document.createElement('span')
-        className = getLanguageFlag(courses[i][0].from) + '_3vx2Z _1ct7y _2XSZu'
+        className = getLanguageFlag(courses[i][0].from) + ' _3vx2Z _1ct7y _2XSZu'
         flag.setAttribute('class', className)
         sourceLang.appendChild(flag)
 
@@ -214,11 +214,11 @@ function constructMenu(courses, fromLang, toLang) {
         for (var j=0; j<subCourseLength; j++) {
             var targetLang = document.createElement('li')
             className = '_2kNgI _1qBnH'
-            if (courses[i][j].learning == toLang) {className = '_1oVFS' + className}
+            if (courses[i][j].learning == toLang) {className = '_1oVFS ' + className}
             targetLang.setAttribute('class', className)
 
             var subFlag = document.createElement('span')
-            className = getLanguageFlag(courses[i][j].learning) + '_3vx2Z _1ct7y _2XSZu'
+            className = getLanguageFlag(courses[i][j].learning) + ' _3vx2Z _1ct7y _2XSZu'
             subFlag.setAttribute('class', className)
             targetLang.appendChild(subFlag)
 
