@@ -4,7 +4,7 @@
 // @namespace   https://github.com/zeta12ti/DuolingoCourseSwitcher
 // @include https://*.duolingo.com/*
 // @grant none
-// @version     0.5
+// @version     0.6
 // @author      zeta12ti
 // ==/UserScript==
 
@@ -47,6 +47,7 @@
 // Learning J'apprends
 // Languages Langues
 // level niveau
+// Fun fact of the day: all the undeclared stuff varies depending on the language.
 // Arabic||preposition ("of the") + language de l\'arabe
 // Arabic||"Le/L\'" + language name L\'arabe
 // Arabic Arabe
@@ -207,8 +208,13 @@ function hideSubmenuFunction() {
 
 // counstructs a menu based on courses (array of arrays), other args are the current languages
 function constructMenu(courses, fromLang, toLang) {
+    // credit to gmelikov and guillaumebrunerie for the css
+    // may need to tweak this
     css = document.createElement('style')
-    css.innerHTML = '.language-submenu {position:absolute; top:-28px !important; color:#000; background-color: #fff; min-width: 150px; min-height: 50px; display: none !important;}html[dir="ltr"] .language-submenu {left:200px !important;}html[dir="rtl"] .language-submenu {right:200px !important;}'
+    css.innerHTML = '._2kNgI {position:relative}'+
+                    '.language-submenu {position:absolute; top:-51px !important; color:#000; background-color: #fff; min-width: 150px; min-height: 50px; display: none !important;}'+
+                    'html[dir="ltr"] .language-submenu {left:200px !important;}'+
+                    'html[dir="rtl"] .language-submenu {right:200px !important;}'
     document.querySelector('html > head').appendChild(css)
     
     var topMenu = document.querySelector('._20LC5')
@@ -239,11 +245,11 @@ function constructMenu(courses, fromLang, toLang) {
         sourceLang.appendChild(flag)
 
         var languageName = getLanguageString(courses[i][0].from)
-        var localizedLanguageName = duo.l10n.undeclared[languageName + '||"Le/L\'" + language name']
+        var localizedLanguageName = duo.l10n.undeclared[languageName + '||"Le/L\'" + language name'] || languageName
         sourceLang.appendChild(document.createTextNode(localizedLanguageName))
 
         var targetLangMenu = document.createElement('ul')
-        targetLangMenu.setAttribute('class', '_20LC5 FUNrE _3w0_r OSaWc _2HujR _1ZY-H language-submenu') // same as top level menu, but style it as a dropdown-menu too. May want 'OSaWc _2HujR _1ZY-H' (popover) instead
+        targetLangMenu.setAttribute('class', 'OSaWc _1ZY-H language-submenu') // same as top level menu, but without the arrow (_2HujR)
 
         var subheader = document.createElement("li")
         subheader.setAttribute('class', '_2PurW')
@@ -269,34 +275,20 @@ function constructMenu(courses, fromLang, toLang) {
             if (!currentCourse) {
                 targetLang.addEventListener('click', switchCourseFunction)
             }
-
-            //  var clickArea = document.createElement('a')
-            //  clickArea.setAttribute('href', 'javascript:')
-            //  clickArea.setAttribute('data-from', courses[i][j].from)
-            //  clickArea.setAttribute('data-to', courses[i][j].learning)
-            //  if (!currentCourse) {
-                //  clickArea.addEventListener('click', switchCourseFunction)
-            //  }
-            //  targetLang.appendChild(clickArea)
             
-
             var subFlag = document.createElement('span')
             className = getLanguageFlag(courses[i][j].learning) + ' _3vx2Z _1ct7y _2XSZu'
             subFlag.setAttribute('class', className)
-            //  subFlag.setAttribute('data-from', courses[i][j].from)
-            //  subFlag.setAttribute('data-to', courses[i][j].learning)
-            //  if (!currentCourse) {
-                //  subFlag.addEventListener('click', switchCourseFunction)
-            //  }
             targetLang.appendChild(subFlag)
 
             var subLanguageName = getLanguageString(courses[i][j].learning)
-            subLocalizedLanguageName = duo.l10n.undeclared[subLanguageName + '||I want to learn...']
+            subLocalizedLanguageName = duo.l10n.undeclared[subLanguageName + '||I want to learn...'] || subLanguageName
             targetLang.appendChild(document.createTextNode(subLocalizedLanguageName))
 
             var levelText = document.createElement('span')
             levelText.setAttribute('class', '_1fA14')
-            levelText.innerHTML = duo.l10n.declared[183] + ' ' + courses[i][j].level // niveau
+            levelText.setAttribute('style', 'color: gray')
+            levelText.innerHTML = ' ' + duo.l10n.declared[183] + ' ' + courses[i][j].level // niveau
             targetLang.appendChild(levelText)
 
             targetLangMenu.appendChild(targetLang)
@@ -334,9 +326,13 @@ function constructMenu(courses, fromLang, toLang) {
     topMenu.appendChild(addNewCourse)
 
     // TODO:
-    // add onMouseOver for top menu - make sub menu appear in the right spot (will require adding the style for the menu since it's not part of the normal site - oy - Old version looks pretty good)
+    // Merge into actual GitHub git
+    // fix duo.l10n.undeclared mess (not sure what to do)
+    // May just resort to a fixed declaration rather than trying to use the live things.
+    // fix css (done ish) Take a look at rtl line up: it doesn't look the same.
     // add variable to check if we've already done what we need to
     // (may just change the menu once when the page loads)
-    // and that's pretty much it
+    // add code to actually execute stuff
     // clean up code
+    // and that's pretty much it
 }
