@@ -1,5 +1,5 @@
 // ==UserScript==
-// @name        GM_testing
+// @name        Duolingo Course Switcher (New Site)
 // @description Simplifies switching between courses that use different interface language (i.e., base language, the language from which you learn).
 // @namespace   https://github.com/zeta12ti/DuolingoCourseSwitcher
 // @include https://*.duolingo.com/*
@@ -48,6 +48,7 @@
 // Languages Langues
 // level niveau
 // Fun fact of the day: all the undeclared stuff varies depending on the language.
+// I'll just use the basic name for everything.
 // Arabic||preposition ("of the") + language de l\'arabe
 // Arabic||"Le/L\'" + language name L\'arabe
 // Arabic Arabe
@@ -64,11 +65,7 @@ var duo = window.duo // no need to use unsecureWindow, since we don't grant anyt
 var languages = {"ar": "Arabic", "bn": "Bengali", "ca": "Catalan", "cs": "Czech", "cy": "Welsh", "da": "Danish", "de": "German", "el": "Greek", "en": "English", "eo": "Esperanto", "es": "Spanish", "fr": "French", "ga": "Irish", "gn": "Guarani (Jopar\\u00e1)", "he": "Hebrew", "hi": "Hindi", "hu": "Hungarian", "id": "Indonesian", "it": "Italian", "ja": "Japanese", "ko": "Korean", "nl-NL": "Dutch", "no-BO": "Norwegian (Bokm\\u00e5l)", "pa": "Punjabi (Gurmukhi)", "pl": "Polish", "pt": "Portuguese", "ro": "Romanian", "ru": "Russian", "sv": "Swedish", "sw": "Swahili", "ta": "Tamil", "te": "Telugu", "th": "Thai", "tl": "Tagalog", "tlh": "Klingon", "tr": "Turkish", "uk": "Ukrainian", "vi": "Vietnamese", "zh-CN": "Chinese"}
 
 function getLanguageString(languageCode) {
-    if (languageCode in languages) {
-        return languages[languageCode]
-    } else {
-        return "Unknown"
-    }
+    return duo.l10n.undeclared[languages[languageCode] + '||capitalized'] || duo.l10n.undeclared[languages[languageCode]] || languages[languageCode] || 'Unknown'
 }
 
 // language flags - extracted from https://d35aaqx5ub95lt.cloudfront.net/js/app-5dfdd9c3.js
@@ -196,11 +193,13 @@ function switchCourseFunction() {
 }
 
 
+// Show a submenu ('this' is the source language item)
 function showSubmenuFunction() {
     this.querySelector('.language-submenu').setAttribute('style', 'display: block !important')
 }
 
 
+// Hide a submenu ('this' is the source language item)
 function hideSubmenuFunction() {
     this.querySelector('.language-submenu').setAttribute('style', 'display: none !important')
 }
@@ -212,9 +211,9 @@ function constructMenu(courses, fromLang, toLang) {
     // may need to tweak this
     css = document.createElement('style')
     css.innerHTML = '._2kNgI {position:relative}'+
-                    '.language-submenu {position:absolute; top:-51px !important; color:#000; background-color: #fff; min-width: 150px; min-height: 50px; display: none !important;}'+
-                    'html[dir="ltr"] .language-submenu {left:200px !important;}'+
-                    'html[dir="rtl"] .language-submenu {right:200px !important;}'
+                '.language-submenu {position:absolute; top:-51px !important; display: none !important;}'+
+                'html[dir="ltr"] .language-submenu {left:100% !important;}'+
+                'html[dir="rtl"] .language-submenu {right:100% !important;}'
     document.querySelector('html > head').appendChild(css)
     
     var topMenu = document.querySelector('._20LC5')
@@ -244,12 +243,12 @@ function constructMenu(courses, fromLang, toLang) {
         flag.setAttribute('class', className)
         sourceLang.appendChild(flag)
 
-        var languageName = getLanguageString(courses[i][0].from)
-        var localizedLanguageName = duo.l10n.undeclared[languageName + '||"Le/L\'" + language name'] || languageName
+        var localizedLanguageName = getLanguageString(courses[i][0].from)
         sourceLang.appendChild(document.createTextNode(localizedLanguageName))
 
         var targetLangMenu = document.createElement('ul')
         targetLangMenu.setAttribute('class', 'OSaWc _1ZY-H language-submenu') // same as top level menu, but without the arrow (_2HujR)
+        targetLangMenu.style.zIndex = "10"
 
         var subheader = document.createElement("li")
         subheader.setAttribute('class', '_2PurW')
@@ -282,7 +281,7 @@ function constructMenu(courses, fromLang, toLang) {
             targetLang.appendChild(subFlag)
 
             var subLanguageName = getLanguageString(courses[i][j].learning)
-            subLocalizedLanguageName = duo.l10n.undeclared[subLanguageName + '||I want to learn...'] || subLanguageName
+            subLocalizedLanguageName = getLanguageString(courses[i][j].learning)
             targetLang.appendChild(document.createTextNode(subLocalizedLanguageName))
 
             var levelText = document.createElement('span')
@@ -324,15 +323,10 @@ function constructMenu(courses, fromLang, toLang) {
     addNewCourse.appendChild(document.createTextNode(duo.l10n.declared[178])) // Ajouter un nouveau cours
     addNewCourse.addEventListener('click', function() {window.location.href = '/courses'})
     topMenu.appendChild(addNewCourse)
-
-    // TODO:
-    // Merge into actual GitHub git
-    // fix duo.l10n.undeclared mess (not sure what to do)
-    // May just resort to a fixed declaration rather than trying to use the live things.
-    // fix css (done ish) Take a look at rtl line up: it doesn't look the same.
-    // add variable to check if we've already done what we need to
-    // (may just change the menu once when the page loads)
-    // add code to actually execute stuff
-    // clean up code
-    // and that's pretty much it
 }
+// TODO:
+// add variable to check if we've already done what we need to
+// (may just change the menu once when the page loads)
+// add code to actually execute stuff
+// clean up code
+// and that's pretty much it
