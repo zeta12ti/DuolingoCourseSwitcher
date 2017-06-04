@@ -4,7 +4,7 @@
 // @namespace   https://github.com/zeta12ti/DuolingoCourseSwitcher
 // @include https://*.duolingo.com/*
 // @grant none
-// @version     0.6
+// @version     0.7
 // @author      zeta12ti
 // ==/UserScript==
 
@@ -57,9 +57,6 @@
 // Arabic||preposition ("from") + language de l\'arabe
 // Arabic||capitalized Arabe'
 
-var duoState = JSON.parse(localStorage['duo.state'])
-var duo = window.duo // no need to use unsecureWindow, since we don't grant anything
-
 // Language names (in english) - for use with duo.l10n.undeclared
 // extracted from https://duolingo.com/api/1/courses/list
 var languages = {"ar": "Arabic", "bn": "Bengali", "ca": "Catalan", "cs": "Czech", "cy": "Welsh", "da": "Danish", "de": "German", "el": "Greek", "en": "English", "eo": "Esperanto", "es": "Spanish", "fr": "French", "ga": "Irish", "gn": "Guarani (Jopar\\u00e1)", "he": "Hebrew", "hi": "Hindi", "hu": "Hungarian", "id": "Indonesian", "it": "Italian", "ja": "Japanese", "ko": "Korean", "nl-NL": "Dutch", "no-BO": "Norwegian (Bokm\\u00e5l)", "pa": "Punjabi (Gurmukhi)", "pl": "Polish", "pt": "Portuguese", "ro": "Romanian", "ru": "Russian", "sv": "Swedish", "sw": "Swahili", "ta": "Tamil", "te": "Telugu", "th": "Thai", "tl": "Tagalog", "tlh": "Klingon", "tr": "Turkish", "uk": "Ukrainian", "vi": "Vietnamese", "zh-CN": "Chinese"}
@@ -71,14 +68,34 @@ function getLanguageString(languageCode) {
 // language flags - extracted from https://d35aaqx5ub95lt.cloudfront.net/js/app-5dfdd9c3.js
 // keys: remove flag- prefix and keep consistency - zs -> zh-CN, kl -> tlh, (zs -> zh-¿?)
 // It appears that the strings are used as part of the class name.
-var flags={"ar": "_1ARRD _3viv6", "bn": "_2TXAL _3viv6", "ca": "mc4rg _3viv6", "cs": "_1uPQW _3viv6", "cy": "_1jO8h _3viv6", "da": "_1h0xh _3viv6", "de": "oboa9 _3viv6", "dk": "_3AA1F _3viv6", "el": "_2tQo9 _3viv6", "en": "_2cR-E _3viv6", "eo": "pWj0w _3viv6", "es": "u5W-o _3viv6", "fr": "_2KQN3 _3viv6", "ga": "_1vhNM _3viv6", "gn": "_24xu4 _3viv6", "he": "_PDrK _3viv6", "hi": "OgUIe _3viv6", "hu": "_1S3hi _3viv6", "id": "_107sn _3viv6", "it": "_1PruQ _3viv6", "ja": "_2N-Uj _3viv6", "ko": "_2lkzc _3viv6", "nl-NL": "_1fajz _3viv6", "no-BO": "_200jU _3viv6", "pl": "_3uusw _3viv6", "pt": "pmGwL _3viv6", "ro": "_12U6e _3viv6", "ru": "_1eqxJ _3viv6", "sn": "q_PD- _3viv6", "sv": "_2DMfV _3viv6", "sw": "_3T1km _3viv6", "th": "_2oTcA _3viv6", "tl": "_1q_MQ _3viv6", "tlh": "_6mRM _3viv6", "tr": "_1tJJ2 _3viv6", "uk": "_1zZsN _3viv6", "un": "t-XH- _3viv6", "vi": "_1KtzC _3viv6", "zh": "xi6jQ _3viv6", "zh-CN": "_2gNgd _3viv6", "_circle-flag": "_2XSZu", "_flag": "_3viv6", "medium-circle-flag": "_1ct7y _2XSZu", "micro-circle-flag": "_3i5IF _2XSZu", "small-circle-flag": "_3PU7E _2XSZu"}
+var flags = {"ar": "_1ARRD _3viv6", "bn": "_2TXAL _3viv6", "ca": "mc4rg _3viv6", "cs": "_1uPQW _3viv6", "cy": "_1jO8h _3viv6", "da": "_1h0xh _3viv6", "de": "oboa9 _3viv6", "dk": "_3AA1F _3viv6", "el": "_2tQo9 _3viv6", "en": "_2cR-E _3viv6", "eo": "pWj0w _3viv6", "es": "u5W-o _3viv6", "fr": "_2KQN3 _3viv6", "ga": "_1vhNM _3viv6", "gn": "_24xu4 _3viv6", "he": "_PDrK _3viv6", "hi": "OgUIe _3viv6", "hu": "_1S3hi _3viv6", "id": "_107sn _3viv6", "it": "_1PruQ _3viv6", "ja": "_2N-Uj _3viv6", "ko": "_2lkzc _3viv6", "nl-NL": "_1fajz _3viv6", "no-BO": "_200jU _3viv6", "pl": "_3uusw _3viv6", "pt": "pmGwL _3viv6", "ro": "_12U6e _3viv6", "ru": "_1eqxJ _3viv6", "sn": "q_PD- _3viv6", "sv": "_2DMfV _3viv6", "sw": "_3T1km _3viv6", "th": "_2oTcA _3viv6", "tl": "_1q_MQ _3viv6", "tlh": "_6mRM _3viv6", "tr": "_1tJJ2 _3viv6", "uk": "_1zZsN _3viv6", "un": "t-XH- _3viv6", "vi": "_1KtzC _3viv6", "zh": "xi6jQ _3viv6", "zh-CN": "_2gNgd _3viv6", "_circle-flag": "_2XSZu", "_flag": "_3viv6", "medium-circle-flag": "_1ct7y _2XSZu", "micro-circle-flag": "_3i5IF _2XSZu", "small-circle-flag": "_3PU7E _2XSZu"}
+// Use this to identify a row in the original list.
+var inverse_flags = {"OgUIe _3viv6": "hi", "_107sn _3viv6": "id", "_12U6e _3viv6": "ro", "_1ARRD _3viv6": "ar", "_1KtzC _3viv6": "vi", "_1PruQ _3viv6": "it", "_1S3hi _3viv6": "hu", "_1ct7y _2XSZu": "medium-circle-flag", "_1eqxJ _3viv6": "ru", "_1fajz _3viv6": "nl-NL", "_1h0xh _3viv6": "da", "_1jO8h _3viv6": "cy", "_1q_MQ _3viv6": "tl", "_1tJJ2 _3viv6": "tr", "_1uPQW _3viv6": "cs", "_1vhNM _3viv6": "ga", "_1zZsN _3viv6": "uk", "_200jU _3viv6": "no-BO", "_24xu4 _3viv6": "gn", "_2DMfV _3viv6": "sv", "_2KQN3 _3viv6": "fr", "_2N-Uj _3viv6": "ja", "_2TXAL _3viv6": "bn", "_2XSZu": "_circle-flag", "_2cR-E _3viv6": "en", "_2gNgd _3viv6": "zh-CN", "_2lkzc _3viv6": "ko", "_2oTcA _3viv6": "th", "_2tQo9 _3viv6": "el", "_3AA1F _3viv6": "dk", "_3PU7E _2XSZu": "small-circle-flag", "_3T1km _3viv6": "sw", "_3i5IF _2XSZu": "micro-circle-flag", "_3uusw _3viv6": "pl", "_3viv6": "_flag", "_6mRM _3viv6": "tlh", "_PDrK _3viv6": "he", "mc4rg _3viv6": "ca", "oboa9 _3viv6": "de", "pWj0w _3viv6": "eo", "pmGwL _3viv6": "pt", "q_PD- _3viv6": "sn", "t-XH- _3viv6": "un", "u5W-o _3viv6": "es", "xi6jQ _3viv6": "zh"}
+
 
 function getLanguageFlag(languageCode) {
-    if (languageCode in flags) {
-        return flags[languageCode]
-    } else {
-        return flags.un // maybe one of the other flags would be appropriate, but this is what jrikhal uses.
+    return flags[languageCode] || flags.un
+    // maybe one of the other flags would be appropriate, but this is what jrikhal uses.
+}
+
+
+function getLanguageFromFlag(flagCode) {
+    return inverse_flags[flagCode] || 'un'
     }
+
+
+// extract the language switchers that Duolingo uses natively.
+// should work despite the bind shenanigans
+function getNativeLanguageSwitchers() {
+    var flagNodes = document.querySelectorAll('._3vx2Z') // list of small flags ('._2XSZu' would include the larger flag)
+    var switchFunctions = {}
+    var len = flagNodes.length
+    for (var i=0; i<len; i++) {
+        var lang = getLanguageFromFlag(flagNodes[i].classList[0] + ' _3viv6')
+        switchFunctions[lang] = flagNodes[i].parentElement.click.bind(flagNodes[i].parentElement)
+    }
+
+    return switchFunctions
 }
 
 
@@ -93,6 +110,16 @@ function deleteChildren(query) {
     node = document.querySelector(query)
     while (node.hasChildNodes()) {
         node.removeChild(node.lastChild);
+    }
+}
+
+
+// Hides the old menu (keep it around for the native switchers)
+function hideMenuItems() {
+    menuItems = document.querySelectorAll('._20LC5 > *')
+    len = menuItems.length
+    for (var i=0; i<len; i++) {
+        menuItems[i].style.display = "none"
     }
 }
 
@@ -141,7 +168,7 @@ function getCourseInfo() {
 // Takes an argument of the form given by the output of getCourseInfo
 // Sorts from languages by number of courses and learning languages by xp.
 function sortCourseInfo(courses) {
-    sortedLanguages = keys(courses).sort(function(a, b) { return courses[b].length - courses[a].length })
+    sortedLanguages = Object.keys(courses).sort(function(a, b) { return courses[b].length - courses[a].length })
     return sortedLanguages.map(function(a) { return courses[a].sort(function(b,c) { return c.xp - b.xp } )})
 }
 
@@ -205,19 +232,28 @@ function hideSubmenuFunction() {
 }
 
 
-// counstructs a menu based on courses (array of arrays), other args are the current languages
+// Change which course has the gray
+function switchGrayedCourse() {
+    document.querySelector('._1oVFS._2kNgI._1qBnH.target-lang').classList.remove('_1oVFS')
+    this.className = '_1oVFS ' + this.className}
+
+
+// constructs a menu based on courses (array of arrays), other args are the current languages
 function constructMenu(courses, fromLang, toLang) {
-    // credit to gmelikov and guillaumebrunerie for the css
-    // may need to tweak this
+    // partial credit to gmelikov and guillaumebrunerie for the css
+    console.log(courses, fromLang, toLang)
     css = document.createElement('style')
     css.innerHTML = '._2kNgI {position:relative}'+
                 '.language-submenu {position:absolute; top:-51px !important; display: none !important;}'+
                 'html[dir="ltr"] .language-submenu {left:100% !important;}'+
                 'html[dir="rtl"] .language-submenu {right:100% !important;}'
     document.querySelector('html > head').appendChild(css)
-    
+
+    // Fetch these before deleting the old list.
+    nativeLanguageSwitchers = getNativeLanguageSwitchers()
+
     var topMenu = document.querySelector('._20LC5')
-    deleteChildren('._20LC5')
+    hideMenuItems() // Don't delete them.
 
     var header = document.createElement("li")
     header.setAttribute('class', '_2PurW')
@@ -231,6 +267,7 @@ function constructMenu(courses, fromLang, toLang) {
     var courseLength = courses.length
     for (var i=0; i<courseLength; i++) {
         var sourceLang = document.createElement('li')
+
         var className = '_2kNgI _1qBnH'
         if (courses[i][0].from == fromLang) {
             className = '_1oVFS ' + className
@@ -262,19 +299,22 @@ function constructMenu(courses, fromLang, toLang) {
         var subCourseLength = courses[i].length
         for (var j=0; j<subCourseLength; j++) {
             var targetLang = document.createElement('li')
-            className = '_2kNgI _1qBnH'
-            var currentCourse = false // True if course[i][j] is the current course
+            className = '_2kNgI _1qBnH target-lang'
             if (courses[i][j].from == fromLang && courses[i][j].learning == toLang) {
                 className = '_1oVFS ' + className
-                currentCourse = true
             }
             targetLang.setAttribute('class', className)
             targetLang.setAttribute('data-from', courses[i][j].from)
             targetLang.setAttribute('data-to', courses[i][j].learning)
-            if (!currentCourse) {
+            if (courses[i][j].from == fromLang) {
+                //  targetLang.addEventListener('click', nativeLanguageSwitchers[fromLang]||switchCourseFunction)
+                targetLang.addEventListener('click', nativeLanguageSwitchers[courses[i][j].learning]||switchCourseFunction)
+                targetLang.addEventListener('click', switchGrayedCourse)
+            }
+            else {
                 targetLang.addEventListener('click', switchCourseFunction)
             }
-            
+
             var subFlag = document.createElement('span')
             className = getLanguageFlag(courses[i][j].learning) + ' _3vx2Z _1ct7y _2XSZu'
             subFlag.setAttribute('class', className)
@@ -292,12 +332,12 @@ function constructMenu(courses, fromLang, toLang) {
 
             targetLangMenu.appendChild(targetLang)
         }
-        
+
         sourceLang.appendChild(targetLangMenu)
 
         sourceLang.addEventListener('mouseenter', showSubmenuFunction)
         sourceLang.addEventListener('mouseleave', hideSubmenuFunction)
-        
+
         topMenu.appendChild(sourceLang)
     }
 
@@ -324,9 +364,24 @@ function constructMenu(courses, fromLang, toLang) {
     addNewCourse.addEventListener('click', function() {window.location.href = '/courses'})
     topMenu.appendChild(addNewCourse)
 }
+
+
+// document-idle starts slightly too soon
+window.addEventListener('load', function() {
+    // we have to wait just a tad for duo.state to update (so infuriating)
+    setTimeout( function() {
+        console.log('running')
+        duoState = JSON.parse(localStorage['duo.state'])
+        duo = window.duo
+        var allCourses = sortedCourseInfo()
+        var currentCourse = getCurrentLanguages()
+        constructMenu(allCourses, currentCourse.from, currentCourse.to)
+        },
+        1 // seriously, just a tad
+    )
+})
+
+
 // TODO:
-// add variable to check if we've already done what we need to
-// (may just change the menu once when the page loads)
-// add code to actually execute stuff
 // clean up code
-// and that's pretty much it
+// and that's pretty much it (and yet...)
