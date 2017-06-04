@@ -4,7 +4,7 @@
 // @namespace   https://github.com/zeta12ti/DuolingoCourseSwitcher
 // @include https://*.duolingo.com/*
 // @grant none
-// @version     0.8
+// @version     0.7
 // @author      zeta12ti
 // ==/UserScript==
 
