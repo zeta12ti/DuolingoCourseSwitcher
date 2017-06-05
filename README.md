@@ -33,4 +33,4 @@ This script is currently in beta. It's not guaranteed to work perfectly. There m
 
 ### Acknowledgements
 
-Based in part on this [script](https://github.com/arekolek/DuolingoCourseSwitcher/) with some help from [this](https://gist.github.com/jrikhal/1d3fc649d496ca03a3da0d728e1e8ced) script from jrikhal. I've tried to credit these authors where appropriate in the code.
+This README comes from this [script](https://github.com/arekolek/DuolingoCourseSwitcher/). The code is based on that script with some help from [this](https://gist.github.com/jrikhal/1d3fc649d496ca03a3da0d728e1e8ced) script from jrikhal. I've tried to credit these authors where appropriate in the code.
