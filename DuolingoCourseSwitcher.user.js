@@ -1,12 +1,12 @@
 // ==UserScript==
-// @name        Duolingo Course Switcher (New Site)
+// @name        Duolingo Course Switcher (New Site) (testing)
 // @description Simplifies switching between courses that use different interface language (i.e., base language, the language from which you learn).
 // @namespace   https://github.com/zeta12ti/DuolingoCourseSwitcher
 // @updateURL   https://github.com/zeta12ti/DuolingoCourseSwitcher/raw/master/DuolingoCourseSwitcher.user.js
 // @include     https://*.duolingo.com/*
 // @grant       none
 // @runat       document-idle
-// @version     0.9.0
+// @version     0.9.1
 // @author      zeta12ti, arekolek, jrikhal, gmelikov, guillaumebrunerie
 // ==/UserScript==
 
@@ -27,7 +27,7 @@ var inverse_flags = {"OgUIe _3viv6": "hi", "_107sn _3viv6": "id", "_12U6e _3viv6
 
 function getLanguageFlag(languageCode) {
     return flags[languageCode] || flags.un
-    // maybe one of the other flags would be appropriate, but this is what jrikhal uses.
+    // The 'un' flag is a question mark.
 }
 
 
@@ -37,7 +37,6 @@ function getLanguageFromFlag(flagCode) {
 
 
 // extract the language switchers that Duolingo uses natively.
-// should work despite the bind shenanigans
 function getNativeLanguageSwitchers() {
     var flagNodes = document.querySelectorAll('._3vx2Z') // list of small flags ('._2XSZu' would include the larger flag)
     var switchFunctions = {}
@@ -374,7 +373,9 @@ function pruneDuoState() {
              delete unprunedDuoState.courses[courseKeys[i]]
         }
     }
+    window.localStorage.removeItem('duo.state')
     window.localStorage.setItem('duo.state', JSON.stringify(unprunedDuoState))
+    console.log(JSON.parse(localStorage['duo.state']).courses)
 }
 
 
