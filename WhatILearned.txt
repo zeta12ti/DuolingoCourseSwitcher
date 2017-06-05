@@ -1,0 +1,89 @@
+localStorage['duo.state'] contains a ton of good data
+I need to find out when it's updated - looks like *just* after the page finishes loading everything else
+
+It *looks* like all course info is stored in duo.state. No need for setting values?
+
+found this in https://d35aaqx5ub95lt.cloudfront.net/js/app-5dfdd9c3.js
+      flag: 'HCWXf _3PU7E _2XSZu',
+      '_popover-item': '_1qBnH',
+      'course-popover': '_20LC5 FUNrE _3w0_r OSaWc _2HujR _1ZY-H',
+      'course-header': '_2PurW',
+      course: '_2kNgI _1qBnH',
+      'course-active': '_1oVFS _2kNgI _1qBnH',
+      'menu-flag': '_3vx2Z _1ct7y _2XSZu',
+      level: '_1fA14',
+      'course-divider': 'qsrrc',
+      'course-add': '_2uBp_ _1qBnH',
+
+
+duo is very different from before.
+interesting things:
+duo.l10n.declared[183] is level (niveau)
+duo.l10n.declared[224] includes the number, 335 all caps
+it seems that the actual page uses 183 + ' ' + '{{level}}'
+Even languages with their own numerals just use arabic numerals
+although it seems that rtl languages reverse the order (not sure if that's automatic)
+122, 142 (Languages), 147 J'apprends, 58 langue d'apprendissage
+178 add a new course
+(checked in english and french, arabic is probably right)
+
+
+old duo: duo.ui_translations (uses keys)
+LEARNING J'APPRENDS
+Learning J'apprends
+Languages Langues
+level niveau
+
+duo.l10n.undeclared: 
+Fun fact of the day: all the undeclared stuff varies depending on the language.
+I'll just use the basic name for everything.
+Arabic||preposition ("of the") + language de l\'arabe
+Arabic||"Le/L\'" + language name L\'arabe
+Arabic Arabe
+Arabic||preposition ("of") + language d\'arabe
+Arabic||I want to learn... l'arabe
+Arabic||preposition ("from") + language de l\'arabe
+Arabic||capitalized Arabe'
+
+initializations for every language (extracted from source for duolingo.com (logged in)):
+https://d35aaqx5ub95lt.cloudfront.net/js/vendor-dc221740.js
+https://d35aaqx5ub95lt.cloudfront.net/js/app-059e6287.js
+https://d35aaqx5ub95lt.cloudfront.net/strings/zh-TW-62184a78.js
+https://d35aaqx5ub95lt.cloudfront.net/strings/zh-CN-0da8e7e3.js
+https://d35aaqx5ub95lt.cloudfront.net/strings/vi-aff8f31e.js
+https://d35aaqx5ub95lt.cloudfront.net/strings/uk-eb9fedf3.js
+https://d35aaqx5ub95lt.cloudfront.net/strings/tr-a9f2c854.js
+https://d35aaqx5ub95lt.cloudfront.net/strings/th-d92306fd.js
+https://d35aaqx5ub95lt.cloudfront.net/strings/ru-d818ee9e.js
+https://d35aaqx5ub95lt.cloudfront.net/strings/ro-c248589e.js
+https://d35aaqx5ub95lt.cloudfront.net/strings/pt-c4963ac4.js
+https://d35aaqx5ub95lt.cloudfront.net/strings/pl-c6465f47.js
+https://d35aaqx5ub95lt.cloudfront.net/strings/nl-NL-f19f71b5.js
+https://d35aaqx5ub95lt.cloudfront.net/strings/ko-f5744e33.js
+https://d35aaqx5ub95lt.cloudfront.net/strings/ja-ad67aef2.js
+https://d35aaqx5ub95lt.cloudfront.net/strings/it-308a7779.js
+https://d35aaqx5ub95lt.cloudfront.net/strings/id-508ef25b.js
+https://d35aaqx5ub95lt.cloudfront.net/strings/hu-b0c6f040.js
+https://d35aaqx5ub95lt.cloudfront.net/strings/hi-30528dbe.js
+https://d35aaqx5ub95lt.cloudfront.net/strings/fr-b0e1337c.js
+https://d35aaqx5ub95lt.cloudfront.net/strings/es-8e60d541.js
+https://d35aaqx5ub95lt.cloudfront.net/strings/en-ba703dc9.js
+https://d35aaqx5ub95lt.cloudfront.net/strings/el-34b7c744.js
+https://d35aaqx5ub95lt.cloudfront.net/strings/de-56613b48.js
+https://d35aaqx5ub95lt.cloudfront.net/strings/cs-980ed4ce.js
+https://d35aaqx5ub95lt.cloudfront.net/strings/ar-b4bf83e9.js
+
+
+language codes extracted from https://duolingo.com/api/1/courses/list
+
+flag codes extracted from extracted from https://d35aaqx5ub95lt.cloudfront.net/js/app-5dfdd9c3.js
+For consistency - zs -> zh-CN, kl -> tlh, (zs -> zh-¿?)
+
+Duolingo's native course switching is significantly faster (no page reload)
+
+duoState.config.xpLevelCutoffs
+duoState.courses
+duoState.user.fromLanguage
+duoState.user.learningLanguage
+
+localStorage['duo.state'] remembers all courses when you visit them. It doesn't forget them if you remove them; do that manually. It stores all the courses for a base language when you visit the new site from that language. It *might* be able to pick up courses from other languages if you don't have 0 xp in them. Testing showed that happening, but I don't know if it's consistent.
