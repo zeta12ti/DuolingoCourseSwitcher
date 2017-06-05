@@ -2,11 +2,12 @@
 // @name        Duolingo Course Switcher (New Site)
 // @description Simplifies switching between courses that use different interface language (i.e., base language, the language from which you learn).
 // @namespace   https://github.com/zeta12ti/DuolingoCourseSwitcher
-// @include https://*.duolingo.com/*
-// @grant none
-// @runat document-idle
-// @version     0.8
-// @author      zeta12ti
+// @updateURL   https://github.com/zeta12ti/DuolingoCourseSwitcher/raw/master/DuolingoCourseSwitcher.user.js
+// @include     https://*.duolingo.com/*
+// @grant       none
+// @runat       document-idle
+// @version     0.9.0
+// @author      zeta12ti, arekolek, jrikhal, gmelikov, guillaumebrunerie
 // ==/UserScript==
 
 
@@ -381,7 +382,6 @@ function pruneDuoState() {
 function routine() {
     pruneDuoState() // get rid of extraneous courses
     duoState = JSON.parse(window.localStorage['duo.state'])||sortaDuoState()
-    console.log(duoState.courses)
     duo = window.duo||{}
     var allCourses = sortedCourseInfo()
     var currentCourse = getCurrentLanguages()
