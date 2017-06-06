@@ -31,6 +31,8 @@ This userscript for [Duolingo](https://www.duolingo.com/) simplifies switching y
 ### Beta Mode Notice
 This script is currently in beta. It's not guaranteed to work perfectly. There may be caching issues after you delete a course. I currently don't know a fix for this. If a course you're signed up for isn't showing up, navigate to that course the old way, then refresh. This script only works on the parts of the site that use the new design. For now, it appears that only the main page, the practice sessions and settings use the new style. On the other parts of the website, this script will do nothing.
 
+If you're having trouble with a gray screen showing up, click [here](https://github.com/zeta12ti/DuolingoCourseSwitcher/raw/swynix/DuolingoCourseSwitcher.user.js) to try an alternate script. This alternate won't automatically remove courses if you delete them and may not have the latest features.
+
 ### Acknowledgements
 
 This README comes from this [script](https://github.com/arekolek/DuolingoCourseSwitcher/). The code is based on that script with some help from [this](https://gist.github.com/jrikhal/1d3fc649d496ca03a3da0d728e1e8ced) script from jrikhal. I've tried to credit these authors where appropriate in the code.
