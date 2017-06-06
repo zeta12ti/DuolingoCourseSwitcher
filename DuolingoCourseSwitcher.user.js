@@ -391,5 +391,8 @@ function routine() {
 
 // Here's where the actual execution starts
 console.log('Duolingo Course Switcher is running...')
-window.addEventListener('load', verifyDuoState)
+if (document.readyState === 'complete') { verifyDuoState() }
+else {
+    window.addEventListener('load', verifyDuoState)
+}
 window.addEventListener('beforeunload', pruneDuoState) // prune again before closing or redirection.
