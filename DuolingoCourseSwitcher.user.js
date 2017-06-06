@@ -5,8 +5,7 @@
 // @updateURL   https://github.com/zeta12ti/DuolingoCourseSwitcher/raw/master/DuolingoCourseSwitcher.user.js
 // @include     https://*.duolingo.com/*
 // @grant       none
-// @runat       document-idle
-// @version     0.9.0
+// @version     0.9.2
 // @author      zeta12ti, arekolek, jrikhal, gmelikov, guillaumebrunerie
 // ==/UserScript==
 
@@ -27,7 +26,7 @@ var inverse_flags = {"OgUIe _3viv6": "hi", "_107sn _3viv6": "id", "_12U6e _3viv6
 
 function getLanguageFlag(languageCode) {
     return flags[languageCode] || flags.un
-    // maybe one of the other flags would be appropriate, but this is what jrikhal uses.
+    // The 'un' flag is a question mark.
 }
 
 
@@ -37,7 +36,6 @@ function getLanguageFromFlag(flagCode) {
 
 
 // extract the language switchers that Duolingo uses natively.
-// should work despite the bind shenanigans
 function getNativeLanguageSwitchers() {
     var flagNodes = document.querySelectorAll('._3vx2Z') // list of small flags ('._2XSZu' would include the larger flag)
     var switchFunctions = {}
@@ -211,7 +209,7 @@ function constructMenu(courses, fromLang, toLang) {
         sourceLang.setAttribute('class', className)
 
         var flag = document.createElement('span')
-        className = getLanguageFlag(courses[i][0].from) + ' _3vx2Z _1ct7y _2XSZu'
+        className = getLanguageFlag(courses[i][0].from) + ' _3vx2Z _1ct7y _2XSZu new-flag'
         flag.setAttribute('class', className)
         sourceLang.appendChild(flag)
 
@@ -249,7 +247,7 @@ function constructMenu(courses, fromLang, toLang) {
             }
 
             var subFlag = document.createElement('span')
-            className = getLanguageFlag(courses[i][j].learning) + ' _3vx2Z _1ct7y _2XSZu'
+            className = getLanguageFlag(courses[i][j].learning) + ' _3vx2Z _1ct7y _2XSZu new-flag'
             subFlag.setAttribute('class', className)
             targetLang.appendChild(subFlag)
 
@@ -313,6 +311,7 @@ function sortaDuoState() {
     var courseFlags = document.querySelectorAll('._3viv6._3vx2Z._1ct7y._2XSZu')
     var len = courseFlags.length
     for (var i=0; i<len; i++) {
+        if (courseFlags[i].classList.contains('new-flag')) { continue } // skip the new flags added by this script
         var toLang = getLanguageFromFlag(courseFlags[i].classList[0]+' _3viv6')
         if (courseFlags[i].parentElement.classList.contains('_1oVFS')) {
             pseudoDuoState.user.learningLanguage = toLang
@@ -392,4 +391,5 @@ function routine() {
 
 // Here's where the actual execution starts
 console.log('Duolingo Course Switcher is running...')
-verifyDuoState()
+window.addEventListener('load', verifyDuoState)
+window.addEventListener('beforeunload', pruneDuoState) // prune again before closing or redirection.
