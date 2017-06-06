@@ -1,5 +1,5 @@
 // ==UserScript==
-// @name        Duolingo Course Switcher (New Site) (testing)
+// @name        Duolingo Course Switcher (New Site)
 // @description Simplifies switching between courses that use different interface language (i.e., base language, the language from which you learn).
 // @namespace   https://github.com/zeta12ti/DuolingoCourseSwitcher
 // @updateURL   https://github.com/zeta12ti/DuolingoCourseSwitcher/raw/master/DuolingoCourseSwitcher.user.js
