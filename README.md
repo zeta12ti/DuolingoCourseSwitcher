@@ -20,7 +20,7 @@ However, this new update introduced a new annoyance. Since it's impossible to re
 3. Edit the user script. The way to do this varies by browser. Google is your friend.
  * In Firefox, open the Add-ons menu, click on the Greasemonkey tab, find the HideExtraCourses script, click preferences, then click Edit this User Script.
  * In Chrome and Chromium, open the Extensions menu, find the Tampermonkey extension. Click on Options to open the Tampermonkey interface. Click on the Installed User Scripts tab, then click on the HideExtraCourses script.
-4. Edit lines 19-21 to include only the flag codes for the courses you want hidden. By default, three courses are hidden and you may delete them if you wish. The format is [<learning language code>, <base language code>]. Every line except the last should have a comma. Everything after the // is optional.
+4. Edit lines 19-21 to include only the flag codes for the courses you want hidden. By default, three courses are hidden and you may delete them if you wish. The format is \[\<learning language code\>, \<base language code\>\]. Every line except the last should have a comma. Everything after the // is optional.
 
 # Duolingo Course Language Switcher (New Site)
 
