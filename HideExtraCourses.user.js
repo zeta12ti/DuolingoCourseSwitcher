@@ -10,9 +10,9 @@
 
 // Base Languages. Use flag codes.
 var extraCourses = [
-    '_1PruQ', // Italian
-    'OgUIe', // Hindi
-    '_1ARRD' // Arabic
+    '_1PruQ',   // hide courses from Italian
+    'OgUIe',    // hide courses from Hindi
+    '_1ARRD'    // hide courses from Arabic
 ]
 
 
