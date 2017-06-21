@@ -3,7 +3,7 @@
 // @namespace   https://www.github.com/zeta12ti/DuolingoCourseSwitcher
 // @description Hides extra courses from the update introduced in the update on 2017/06/19.
 // @include     https://*.duolingo.com/*
-// @version     1.1
+// @version     1.2
 // @grant       none
 // ==/UserScript==
 
@@ -34,7 +34,7 @@ async function waitForMenu() {
         var menu = document.querySelector('._3I51r._3HsQj._2OF7V')
     }
     catch(e) {
-        setInterval(waitForMenu, 300)
+        setInterval(waitForMenu, 100)
         return
     }
     hideExtraCourses()
