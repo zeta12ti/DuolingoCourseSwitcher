@@ -1,44 +1,46 @@
 // ==UserScript==
 // @name        HideExtraCourses
 // @namespace   https://www.github.com/zeta12ti/DuolingoCourseSwitcher
-// @description Hides extra courses from the update introduced in the update on 2017/06/19. Note: only hides a course if you currently aren't using the same base language as that course.
+// @description Hides extra courses from the update introduced in the update on 2017/06/19.
 // @include     https://*.duolingo.com/*
-// @version     1.0
+// @version     1.1
 // @grant       none
 // ==/UserScript==
 
-/*
-'menu-flag': '_3vx2Z _1ct7y _2XSZu',
-paired: '_2IJLr',
-'menu-flag-small': '_2c_Ro _3vx2Z _1ct7y _2XSZu',
-*/
 
-
-// toLanguage - baseLanguage. Use flag codes.
+// Base Languages. Use flag codes.
 var extraCourses = [
-    ['_2KQN3', '_1PruQ'], // Italian to French
-    ['_2cR-E', 'OgUIe'], // Hindi to English
-    ['oboa9', '_1ARRD'] // Arabic to German
+    '_1PruQ', // Italian
+    'OgUIe', // Hindi
+    '_1ARRD' // Arabic
 ]
 
-function hideExtraCourses() {
-    var courses = document.querySelectorAll('._2kNgI._1qBnH')
-    var len = courses.length
-    for (var i=0; i<len; i++) {
-        var len2 = extraCourses.length
-        for (var j=0; j<len2; j++) {
-            var bigFlagClass = '.' + extraCourses[j][0] + '._2IJLr'
-            var smallFlagClass = '.' + extraCourses[j][1] + '._2c_Ro'
 
-            if (courses[i].querySelectorAll(bigFlagClass).length > 0 && courses[i].querySelectorAll(smallFlagClass).length > 0) {
-                courses[i].setAttribute('style', 'display: none')
-            }
+function hideExtraCourses() {
+    var len = extraCourses.length
+    for (var i=0; i<len; i++) {
+        var smallFlagClass = '.' + extraCourses[i] + '._2c_Ro'
+        var matchingFlags = document.querySelectorAll(smallFlagClass)
+        var len2 = matchingFlags.length
+        for (var j=0; j<len2; j++) {
+            matchingFlags[j].parentNode.setAttribute('style', 'display: none')
         }
     }
 }
 
-if (document.readyState === 'complete') { hideExtraCourses() }
-else {
-    window.addEventListener('load', hideExtraCourses)
+
+async function waitForMenu() {
+    try {
+        var menu = document.querySelector('._3I51r._3HsQj._2OF7V')
+    }
+    catch(e) {
+        setInterval(waitForMenu, 300)
+        return
+    }
+    menu.addEventListener('mouseenter', hideExtraCourses)
+    return
 }
+
+
+waitForMenu()
             
