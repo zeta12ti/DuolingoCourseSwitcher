@@ -37,6 +37,7 @@ async function waitForMenu() {
         setInterval(waitForMenu, 300)
         return
     }
+    hideExtraCourses()
     menu.addEventListener('mouseenter', hideExtraCourses)
     return
 }
