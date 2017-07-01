@@ -52,8 +52,85 @@ function computeMenuOffset (languageSubmenu) {
   return offset
 }
 
-async function setMenuHeight () {
-  this.style.top = -computeMenuOffset(this) + 'px'
+async function setMenuPosition () {
+  var verticalOffset = computeMenuOffset(this)
+  var verticalBase = this.parentNode.getBoundingClientRect().top - document.querySelector('._20LC5').getBoundingClientRect().top
+  //  var horizontalBase = this.parentNode.getBoundingClientRect().left - document.querySelector('._20LC5').getBoundingClientRect().left
+  this.style.top = (verticalBase - verticalOffset) + 'px'
+}
+
+// note: overrides Chrome and IE's addRule
+window.CSSStyleSheet.prototype.addRule = function (rule) {
+  this.insertRule(rule, this.cssRules.length)
+}
+
+function addFromLanguageItem (fromLanguage, currentCourse) {
+  var fromLanguageItem = document.createElement('li')
+
+  var className = '_2kNgI _1qBnH from-course'
+  if (currentCourse) {
+    className = '_1oVFS ' + className
+  }
+  fromLanguageItem.className = className
+
+  var container = document.createElement('li')
+  container.className = '_2kNgI flag-container'
+  fromLanguageItem.appendChild(container)
+
+  var flag = document.createElement('span')
+  className = getLanguageFlag(fromLanguage) + ' _3viv6 _3vx2Z _1ct7y _2XSZu from-flag'
+  flag.className = className
+  container.appendChild(flag)
+
+  var localizedLanguageName = getLanguageString(fromLanguage)
+  container.appendChild(document.createTextNode(localizedLanguageName))
+
+  document.querySelector('._1XE6M').appendChild(fromLanguageItem)
+
+  return fromLanguageItem
+}
+
+function createInnerMenu (oldHeader) {
+  var innerMenu = document.createElement('ul')
+  innerMenu.className = 'OSaWc _1ZY-H language-submenu' // same as top level menu, but without the arrow (_2HujR)
+
+  var innerMenuHeader = document.createElement('li')
+  innerMenuHeader.className = '_2PurW'
+  innerMenuHeader.innerHTML = oldHeader
+  innerMenu.appendChild(innerMenuHeader)
+
+  var innerMenuCourseList = document.createElement('ul')
+  innerMenuCourseList.className = '_1XE6M'
+  innerMenu.appendChild(innerMenuCourseList)
+
+  return innerMenu
+}
+
+async function addStyleSheet () {
+  var cssStyle = document.createElement('style')
+  document.querySelector('html > head').appendChild(cssStyle)
+  var stylesheet = cssStyle.sheet
+
+  stylesheet.addRule('li._2kNgI._1qBnH {display: none}')
+  stylesheet.addRule('ul._1XE6M > li.qsrrc {display: none}')
+  stylesheet.addRule('.from-course:hover .language-submenu {display: block}')
+  stylesheet.addRule('li._2kNgI._1qBnH.from-course {display: block}')
+  stylesheet.addRule('li._2kNgI._1qBnH.learning-course {display: block}')
+  stylesheet.addRule('.flag-container {display: block}')
+  stylesheet.addRule('.flag-container {width: 100%}')
+
+  stylesheet.addRule('.language-submenu ._1XE6M .learning-course ._1fA14 {color: #999}')
+  stylesheet.addRule('.language-submenu ._1XE6M .learning-course:hover ._1fA14 {color: #fff}')
+
+  stylesheet.addRule('.from-course {position: static}')
+  stylesheet.addRule('._1XE6M {position: static}')
+  stylesheet.addRule('.language-submenu {position: absolute}')
+  stylesheet.addRule('.language-submenu {z-index: 10}')
+  stylesheet.addRule('.flag-container {position: relative}')
+  stylesheet.addRule('.from-course {padding: 0px 0px 0px 0px}')
+  stylesheet.addRule('.flag-container {padding: 3px 20px 3px 47px}')
+  stylesheet.addRule('html[dir="ltr"] .language-submenu {left:90%}')
+  stylesheet.addRule('html[dir="rtl"] .language-submenu {right:90%}')
 }
 
 async function reorganizeMenu () {
@@ -61,34 +138,14 @@ async function reorganizeMenu () {
   var baseLanguages = {}
   var courses = document.querySelectorAll('li._2kNgI._1qBnH')
 
-  var cssStyle = document.createElement('style')
-  document.querySelector('html > head').appendChild(cssStyle)
-  var stylesheet = cssStyle.sheet
-  stylesheet.insertRule('._2kNgI {position: relative}', stylesheet.cssRules.length)
-  stylesheet.insertRule('.language-submenu {position: absolute}', stylesheet.cssRules.length)
-  stylesheet.insertRule('html[dir="ltr"] .language-submenu {left:100% !important}', stylesheet.cssRules.length)
-  stylesheet.insertRule('html[dir="rtl"] .language-submenu {right:100% !important}', stylesheet.cssRules.length)
-
-  stylesheet.insertRule('.from-course:hover .language-submenu {display: block}', stylesheet.cssRules.length)
-  stylesheet.insertRule('li._2kNgI._1qBnH {display: none}', stylesheet.cssRules.length)
-  stylesheet.insertRule('li._2kNgI._1qBnH.from-course {display: block}', stylesheet.cssRules.length)
-  stylesheet.insertRule('li._2kNgI._1qBnH.learning-course {display: block}', stylesheet.cssRules.length)
-
-  stylesheet.insertRule('.language-submenu  ._1XE6M  .learning-course ._1fA14 {color: #999}', stylesheet.cssRules.length)
-  stylesheet.insertRule('.language-submenu  ._1XE6M  .learning-course:hover ._1fA14 {color: #fff}', stylesheet.cssRules.length)
-
-  document.querySelector('._1XE6M').style.overflow = 'visible' // allow children to spill beyond - may lead to problems with too many languages
-  // DOESN'T WORK possibility: make the menu itself overflow: auto, but leave _1XE6M with visible
-  //  document.querySelector('._20LC5.FUNrE._3w0_r.OSaWc._2HujR._1ZY-H').style.overflow = 'auto'
-  // might make sub menus have that too
+  addStyleSheet()
 
   var oldHeader = document.querySelector('._2PurW').innerHTML
-  document.querySelector('._2PurW').innerHTML = '<h6>' + window.duo.l10n.declared[144] + '</h6>' // languages
-  document.querySelector('ul._1XE6M > li.qsrrc').style.display = 'none'
+  document.querySelector('._2PurW').innerHTML = '<h6>' + window.duo.l10n.declared[144] + '</h6>' // Languages
 
   for (var i = 0, len = courses.length; i < len; i++) {
     var menuItem = courses[i].cloneNode(true)
-    //  courses[i].style.display = 'none'
+    menuItem.addEventListener('mouseclick', courses[i].click.bind(courses[i]))
 
     // ignore any matches that we already touched
     if (menuItem.classList.contains('from-course')) {
@@ -122,7 +179,7 @@ async function reorganizeMenu () {
     menuItem.dataset.learning = learningLanguage
     menuItem.dataset.from = fromLanguage
     menuItem.classList.add('learning-course')
-    menuItem.style.position = 'relative'
+    //  menuItem.style.position = 'relative'
 
     if (fromLanguage in baseLanguages) {
       baseLanguages[fromLanguage].querySelector('._1XE6M').appendChild(menuItem)
@@ -133,60 +190,18 @@ async function reorganizeMenu () {
       baseLanguages[fromLanguage].querySelector('._1XE6M').appendChild(menuItem)
 
       fromLanguageItem.appendChild(baseLanguages[fromLanguage])
-      fromLanguageItem.addEventListener('mouseover', setMenuHeight.bind(innerMenu))
+      fromLanguageItem.addEventListener('mouseover', setMenuPosition.bind(innerMenu))
     }
   }
 }
 
-function addFromLanguageItem (fromLanguage, currentCourse) {
-  var fromLanguageItem = document.createElement('li')
-
-  var className = '_2kNgI _1qBnH from-course'
-  if (currentCourse) {
-    className = '_1oVFS ' + className
-  }
-  fromLanguageItem.className = className
-  fromLanguageItem.style.cursor = 'default' // clicking on these menus doesn't do anything, so remove the special cursor
-
-  var flag = document.createElement('span')
-  className = getLanguageFlag(fromLanguage) + ' _3viv6 _3vx2Z _1ct7y _2XSZu from-flag'
-  flag.className = className
-  fromLanguageItem.appendChild(flag)
-
-  var localizedLanguageName = getLanguageString(fromLanguage)
-  fromLanguageItem.appendChild(document.createTextNode(localizedLanguageName))
-
-  //  fromLanguageItem.style.position = 'relative'
-
-  document.querySelector('._1XE6M').appendChild(fromLanguageItem)
-
-  return fromLanguageItem
-}
-
-function createInnerMenu (oldHeader) {
-  var innerMenu = document.createElement('ul')
-  innerMenu.className = 'OSaWc _1ZY-H language-submenu' // same as top level menu, but without the arrow (_2HujR)
-
-  var innerMenuHeader = document.createElement('li')
-  innerMenuHeader.className = '_2PurW'
-  innerMenuHeader.innerHTML = oldHeader
-  innerMenu.appendChild(innerMenuHeader)
-
-  var innerMenuCourseList = document.createElement('ul')
-  innerMenuCourseList.className = '_1XE6M'
-  innerMenu.appendChild(innerMenuCourseList)
-
-  return innerMenu
-}
-
 // Sets up the menu.
 function routine () {
+  console.log('Duolingo Course Switcher is running...')
   reorganizeMenu()
   console.log('Done.')
 }
 
-// Here's where the actual execution starts
-console.log('Duolingo Course Switcher is running...')
 if (document.readyState === 'complete') { routine() } else {
   window.addEventListener('load', routine)
 }
