@@ -68,14 +68,19 @@ async function reorganizeMenu () {
   stylesheet.insertRule('.language-submenu {position: absolute}', stylesheet.cssRules.length)
   stylesheet.insertRule('html[dir="ltr"] .language-submenu {left:100% !important}', stylesheet.cssRules.length)
   stylesheet.insertRule('html[dir="rtl"] .language-submenu {right:100% !important}', stylesheet.cssRules.length)
+
   stylesheet.insertRule('.from-course:hover .language-submenu {display: block}', stylesheet.cssRules.length)
   stylesheet.insertRule('li._2kNgI._1qBnH {display: none}', stylesheet.cssRules.length)
   stylesheet.insertRule('li._2kNgI._1qBnH.from-course {display: block}', stylesheet.cssRules.length)
   stylesheet.insertRule('li._2kNgI._1qBnH.learning-course {display: block}', stylesheet.cssRules.length)
 
+  stylesheet.insertRule('.language-submenu  ._1XE6M  .learning-course ._1fA14 {color: #999}', stylesheet.cssRules.length)
+  stylesheet.insertRule('.language-submenu  ._1XE6M  .learning-course:hover ._1fA14 {color: #fff}', stylesheet.cssRules.length)
+
   document.querySelector('._1XE6M').style.overflow = 'visible' // allow children to spill beyond - may lead to problems with too many languages
-  // possibility: make the menu itself overflow: auto, but leave _1XE6M with visible
-  document.querySelector('._1XE6M').style.overflow = 'auto'
+  // DOESN'T WORK possibility: make the menu itself overflow: auto, but leave _1XE6M with visible
+  //  document.querySelector('._20LC5.FUNrE._3w0_r.OSaWc._2HujR._1ZY-H').style.overflow = 'auto'
+  // might make sub menus have that too
 
   var oldHeader = document.querySelector('._2PurW').innerHTML
   document.querySelector('._2PurW').innerHTML = '<h6>' + window.duo.l10n.declared[144] + '</h6>' // languages
