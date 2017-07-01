@@ -145,7 +145,7 @@ async function reorganizeMenu () {
 
   for (var i = 0, len = courses.length; i < len; i++) {
     var menuItem = courses[i].cloneNode(true)
-    menuItem.addEventListener('mouseclick', courses[i].click.bind(courses[i]))
+    menuItem.addEventListener('click', courses[i].click.bind(courses[i]))
 
     // ignore any matches that we already touched
     if (menuItem.classList.contains('from-course')) {
