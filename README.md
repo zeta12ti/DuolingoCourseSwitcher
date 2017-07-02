@@ -12,7 +12,7 @@ A picture is worth a thousand words:
  * Chromium: [Tampermonkey](https://chrome.google.com/webstore/detail/tampermonkey/dhdgffkkebhmkfjojejmpbldmpobfkfo?hl=en)
  * Firefox: [Greasemonkey](https://addons.mozilla.org/en-US/firefox/addon/greasemonkey/)
  * Safari: [JavaScript Blocker](http://javascript-blocker.toggleable.com/)
-2. Click [here](https://github.com/zeta12ti/DuolingoCourseSwitcher/raw/master/DuolingoCourseSwitcher.user.js) to install the userscript.
+2. Click [here](https://github.com/zeta12ti/DuolingoCourseSwitcher/raw/master/HideExtraCourses.user.js) to install the userscript.
 3. Confirm the installation when prompted.
 
 ### Usage
