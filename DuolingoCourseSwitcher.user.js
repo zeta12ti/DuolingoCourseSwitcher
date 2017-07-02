@@ -5,7 +5,7 @@
 // @updateURL   https://github.com/zeta12ti/DuolingoCourseSwitcher/raw/master/DuolingoCourseSwitcher.user.js
 // @include     https://*.duolingo.com/*
 // @grant       none
-// @version     1.0.0
+// @version     1.0.1
 // @author      zeta12ti
 // ==/UserScript==
 
@@ -133,10 +133,18 @@ async function addStyleSheet () {
   stylesheet.addRule('html[dir="rtl"] .language-submenu {right:90%}')
 }
 
+async function copyChanges (modifications, menuItem) {
+  modifications.forEach(mod => {
+    if (mod.target.className === '_1fA14') {
+      menuItem.querySelector('.level-indicator').innerText = mod.target.innerText
+    }
+  })
+}
+
 async function reorganizeMenu () {
   var uiLanguage = window.duo.uiLanguage
   var baseLanguages = {}
-  var courses = document.querySelectorAll('li._2kNgI._1qBnH')
+  var courses = document.querySelectorAll('li._2kNgI._1qBnH:not(.from-course)')
 
   addStyleSheet()
 
@@ -146,11 +154,10 @@ async function reorganizeMenu () {
   for (var i = 0, len = courses.length; i < len; i++) {
     var menuItem = courses[i].cloneNode(true)
     menuItem.addEventListener('click', courses[i].click.bind(courses[i]))
-
-    // ignore any matches that we already touched
-    if (menuItem.classList.contains('from-course')) {
-      continue
-    }
+    menuItem.querySelector('[class="_1fA14"]').classList.add('level-indicator')
+    let observer = new window.MutationObserver((mods) => copyChanges(mods, menuItem))
+    var config = {subtree: true}
+    observer.observe(courses[i], config)
 
     var flags = menuItem.querySelectorAll('._3viv6')
     var learningLanguage, fromLanguage
