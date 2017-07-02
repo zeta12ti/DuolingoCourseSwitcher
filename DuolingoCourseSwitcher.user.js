@@ -156,7 +156,7 @@ async function reorganizeMenu () {
     menuItem.addEventListener('click', courses[i].click.bind(courses[i]))
     menuItem.querySelector('[class="_1fA14"]').classList.add('level-indicator')
     let observer = new window.MutationObserver((mods) => copyChanges(mods, menuItem))
-    var config = {subtree: true}
+    var config = {characterData: true, subtree: true}
     observer.observe(courses[i], config)
 
     var flags = menuItem.querySelectorAll('._3viv6')
