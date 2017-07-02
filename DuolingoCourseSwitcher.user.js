@@ -5,7 +5,7 @@
 // @updateURL   https://github.com/zeta12ti/DuolingoCourseSwitcher/raw/master/DuolingoCourseSwitcher.user.js
 // @include     https://*.duolingo.com/*
 // @grant       none
-// @version     1.0.1
+// @version     1.1.0
 // @author      zeta12ti
 // ==/UserScript==
 
@@ -18,26 +18,26 @@ console.assert(window.duo.version === 'a74f7a1' || window.duo.version === '4fd6e
 // Language names (in english) - for use with duo.l10n.undeclared
 var languages = {'ar': 'Arabic', 'bn': 'Bengali', 'ca': 'Catalan', 'cs': 'Czech', 'cy': 'Welsh', 'da': 'Danish', 'de': 'German', 'el': 'Greek', 'en': 'English', 'eo': 'Esperanto', 'es': 'Spanish', 'fr': 'French', 'ga': 'Irish', 'gn': 'Guarani (Jopar\u00e1)', 'he': 'Hebrew', 'hi': 'Hindi', 'hu': 'Hungarian', 'id': 'Indonesian', 'it': 'Italian', 'ja': 'Japanese', 'ko': 'Korean', 'nl-NL': 'Dutch', 'no-BO': 'Norwegian (Bokm\u00e5l)', 'pa': 'Punjabi (Gurmukhi)', 'pl': 'Polish', 'pt': 'Portuguese', 'ro': 'Romanian', 'ru': 'Russian', 'sv': 'Swedish', 'sw': 'Swahili', 'ta': 'Tamil', 'te': 'Telugu', 'th': 'Thai', 'tl': 'Tagalog', 'tlh': 'Klingon', 'tr': 'Turkish', 'uk': 'Ukrainian', 'vi': 'Vietnamese', 'zh-CN': 'Chinese'}
 
-function getLanguageString (languageCode) {
+async function getLanguageString (languageCode) {
   return window.duo.l10n.undeclared[languages[languageCode] + '||capitalized'] || window.duo.l10n.undeclared[languages[languageCode]] || languages[languageCode] || 'Unknown'
 }
 
 // language flags -
-// keys: remove flag- prefix and keep consistency - zs -> zh-CN, kl -> tlh, (zs -> zh-¿?)
+// keys: remove flag- prefix and keep consistency - zs -> zh-CN, kl -> tlh, (zs -> zh-¿?), values: remove _3viv6
 var flags = {'ar': '_1ARRD', 'bn': '_2TXAL', 'ca': 'mc4rg', 'cs': '_1uPQW', 'cy': '_1jO8h', 'da': '_1h0xh', 'de': 'oboa9', 'dk': '_3AA1F', 'el': '_2tQo9', 'en': '_2cR-E', 'eo': 'pWj0w', 'es': 'u5W-o', 'fr': '_2KQN3', 'ga': '_1vhNM', 'gn': '_24xu4', 'he': '_PDrK', 'hi': 'OgUIe', 'hu': '_1S3hi', 'id': '_107sn', 'it': '_1PruQ', 'ja': '_2N-Uj', 'ko': '_2lkzc', 'nl-NL': '_1fajz', 'no-BO': '_200jU', 'pl': '_3uusw', 'pt': 'pmGwL', 'ro': '_12U6e', 'ru': '_1eqxJ', 'sn': 'q_PD-', 'sv': '_2DMfV', 'sw': '_3T1km', 'th': '_2oTcA', 'tl': '_1q_MQ', 'tlh': '_6mRM', 'tr': '_1tJJ2', 'uk': '_1zZsN', 'un': 't-XH-', 'vi': '_1KtzC', 'zh': 'xi6jQ', 'zh-CN': '_2gNgd', '_circle-flag': '_2XSZu', '_flag': '_3viv6', 'medium-circle-flag': '_1ct7y _2XSZu', 'micro-circle-flag': '_3i5IF _2XSZu', 'small-circle-flag': '_3PU7E _2XSZu'}
 // Use this to identify a row in the original list.
 var inverseFlags = {'OgUIe': 'hi', '_107sn': 'id', '_12U6e': 'ro', '_1ARRD': 'ar', '_1KtzC': 'vi', '_1PruQ': 'it', '_1S3hi': 'hu', '_1ct7y _2XSZu': 'medium-circle-flag', '_1eqxJ': 'ru', '_1fajz': 'nl-NL', '_1h0xh': 'da', '_1jO8h': 'cy', '_1q_MQ': 'tl', '_1tJJ2': 'tr', '_1uPQW': 'cs', '_1vhNM': 'ga', '_1zZsN': 'uk', '_200jU': 'no-BO', '_24xu4': 'gn', '_2DMfV': 'sv', '_2KQN3': 'fr', '_2N-Uj': 'ja', '_2TXAL': 'bn', '_2XSZu': '_circle-flag', '_2cR-E': 'en', '_2gNgd': 'zh-CN', '_2lkzc': 'ko', '_2oTcA': 'th', '_2tQo9': 'el', '_3AA1F': 'dk', '_3PU7E _2XSZu': 'small-circle-flag', '_3T1km': 'sw', '_3i5IF _2XSZu': 'micro-circle-flag', '_3uusw': 'pl', '_3viv6': '_flag', '_6mRM': 'tlh', '_PDrK': 'he', 'mc4rg': 'ca', 'oboa9': 'de', 'pWj0w': 'eo', 'pmGwL': 'pt', 'q_PD-': 'sn', 't-XH-': 'un', 'u5W-o': 'es', 'xi6jQ': 'zh'}
 
-function getLanguageFlag (languageCode) {
+async function getLanguageFlag (languageCode) {
     // The 'un' flag is a question mark.
   return flags[languageCode] || flags.un
 }
 
-function getLanguageFromFlag (flagCode) {
+async function getLanguageFromFlag (flagCode) {
   return inverseFlags[flagCode]
 }
 
-function computeMenuOffset (languageSubmenu) {
+async function computeMenuOffset (languageSubmenu) {
   var header = languageSubmenu.querySelector('._2PurW')
 
   var offset = 0
@@ -53,18 +53,17 @@ function computeMenuOffset (languageSubmenu) {
 }
 
 async function setMenuPosition () {
-  var verticalOffset = computeMenuOffset(this)
+  var verticalOffset = await computeMenuOffset(this)
   var verticalBase = this.parentNode.getBoundingClientRect().top - document.querySelector('._20LC5').getBoundingClientRect().top
   //  var horizontalBase = this.parentNode.getBoundingClientRect().left - document.querySelector('._20LC5').getBoundingClientRect().left
   this.style.top = (verticalBase - verticalOffset) + 'px'
 }
 
-// note: overrides Chrome and IE's addRule
-window.CSSStyleSheet.prototype.addRule = function (rule) {
-  this.insertRule(rule, this.cssRules.length)
+async function addRule = function (stylesheet, rule) {
+  stylesheet.insertRule(rule, stylesheet.cssRules.length)
 }
 
-function addFromLanguageItem (fromLanguage, currentCourse) {
+async function addFromLanguageItem (fromLanguage, currentCourse) {
   var fromLanguageItem = document.createElement('li')
 
   var className = '_2kNgI _1qBnH from-course'
@@ -78,11 +77,11 @@ function addFromLanguageItem (fromLanguage, currentCourse) {
   fromLanguageItem.appendChild(container)
 
   var flag = document.createElement('span')
-  className = getLanguageFlag(fromLanguage) + ' _3viv6 _3vx2Z _1ct7y _2XSZu from-flag'
+  className = await getLanguageFlag(fromLanguage) + ' _3viv6 _3vx2Z _1ct7y _2XSZu from-flag'
   flag.className = className
   container.appendChild(flag)
 
-  var localizedLanguageName = getLanguageString(fromLanguage)
+  var localizedLanguageName = await getLanguageString(fromLanguage)
   container.appendChild(document.createTextNode(localizedLanguageName))
 
   document.querySelector('._1XE6M').appendChild(fromLanguageItem)
@@ -90,9 +89,9 @@ function addFromLanguageItem (fromLanguage, currentCourse) {
   return fromLanguageItem
 }
 
-function createInnerMenu (oldHeader) {
+async function createInnerMenu (oldHeader) {
   var innerMenu = document.createElement('ul')
-  innerMenu.className = 'OSaWc _1ZY-H language-submenu' // same as top level menu, but without the arrow (_2HujR)
+  innerMenu.className = 'OSaWc _1ZY-H language-submenu'
 
   var innerMenuHeader = document.createElement('li')
   innerMenuHeader.className = '_2PurW'
@@ -111,32 +110,35 @@ async function addStyleSheet () {
   document.querySelector('html > head').appendChild(cssStyle)
   var stylesheet = cssStyle.sheet
 
-  stylesheet.addRule('li._2kNgI._1qBnH {display: none}')
-  stylesheet.addRule('ul._1XE6M > li.qsrrc {display: none}')
-  stylesheet.addRule('.from-course:hover .language-submenu {display: block}')
-  stylesheet.addRule('li._2kNgI._1qBnH.from-course {display: block}')
-  stylesheet.addRule('li._2kNgI._1qBnH.learning-course {display: block}')
-  stylesheet.addRule('.flag-container {display: block}')
-  stylesheet.addRule('.flag-container {width: 100%}')
+  addRule(stylesheet, 'li._2kNgI._1qBnH {display: none}')
+  addRule(stylesheet, 'ul._1XE6M > li.qsrrc {display: none}')
+  addRule(stylesheet, '.from-course:hover .language-submenu {display: block}')
+  addRule(stylesheet, 'li._2kNgI._1qBnH.from-course {display: block}')
+  addRule(stylesheet, 'li._2kNgI._1qBnH.learning-course {display: block}')
+  addRule(stylesheet, '.flag-container {display: block}')
+  addRule(stylesheet, '.flag-container {width: 100%}')
 
-  stylesheet.addRule('.language-submenu ._1XE6M .learning-course ._1fA14 {color: #999}')
-  stylesheet.addRule('.language-submenu ._1XE6M .learning-course:hover ._1fA14 {color: #fff}')
+  addRule(stylesheet, '.language-submenu ._1XE6M .learning-course ._1fA14 {color: #999}')
+  addRule(stylesheet, '.language-submenu ._1XE6M .learning-course:hover ._1fA14 {color: #fff}')
 
-  stylesheet.addRule('.from-course {position: static}')
-  stylesheet.addRule('._1XE6M {position: static}')
-  stylesheet.addRule('.language-submenu {position: absolute}')
-  stylesheet.addRule('.language-submenu {z-index: 10}')
-  stylesheet.addRule('.flag-container {position: relative}')
-  stylesheet.addRule('.from-course {padding: 0px 0px 0px 0px}')
-  stylesheet.addRule('.flag-container {padding: 3px 20px 3px 47px}')
-  stylesheet.addRule('html[dir="ltr"] .language-submenu {left:90%}')
-  stylesheet.addRule('html[dir="rtl"] .language-submenu {right:90%}')
+  addRule(stylesheet, '.from-course {position: static}')
+  addRule(stylesheet, '._1XE6M {position: static}')
+  addRule(stylesheet, '.language-submenu {position: absolute}')
+  addRule(stylesheet, '.language-submenu {z-index: 10}')
+  addRule(stylesheet, '.flag-container {position: relative}')
+  addRule(stylesheet, '.from-course {padding: 0px 0px 0px 0px}')
+  addRule(stylesheet, '.flag-container {padding: 3px 20px 3px 47px}')
+  addRule(stylesheet, 'html[dir="ltr"] .language-submenu {left:90%}')
+  addRule(stylesheet, 'html[dir="rtl"] .language-submenu {right:90%}')
 }
 
 async function copyChanges (modifications, menuItem) {
   modifications.forEach(mod => {
-    if (mod.target.className === '_1fA14') {
-      menuItem.querySelector('.level-indicator').innerText = mod.target.innerText
+    if (mod.target.parentNode.classList && mod.target.parentNode.classList.contains('old-level-indicator')) {
+      menuItem.querySelector('.level-indicator').innerText = mod.target.parentNode.innerText
+    }
+    if (mod.target.classList && mod.target.classList.contains('_2kNgI')) {
+      menuItem.className = mod.target.className + ' learning-course'
     }
   })
 }
@@ -152,21 +154,24 @@ async function reorganizeMenu () {
   document.querySelector('._2PurW').innerHTML = '<h6>' + window.duo.l10n.declared[144] + '</h6>' // Languages
 
   for (var i = 0, len = courses.length; i < len; i++) {
-    var menuItem = courses[i].cloneNode(true)
+    let menuItem = courses[i].cloneNode(true)
+    courses[i].classList.add('old-menu-item')
+    courses[i].querySelector('._1fA14').classList.add('old-level-indicator')
+    
     menuItem.addEventListener('click', courses[i].click.bind(courses[i]))
-    menuItem.querySelector('[class="_1fA14"]').classList.add('level-indicator')
-    let observer = new window.MutationObserver((mods) => copyChanges(mods, menuItem))
-    var config = {characterData: true, subtree: true}
+    menuItem.querySelector('._1fA14').classList.add('level-indicator')
+    let observer = new window.MutationObserver((mods) => { copyChanges(mods, menuItem) })
+    var config = {attributes: true, characterData: true, subtree: true}
     observer.observe(courses[i], config)
 
     var flags = menuItem.querySelectorAll('._3viv6')
     var learningLanguage, fromLanguage
     if (typeof menuItem.dataset.from === 'undefined' && typeof menuItem.dataset.learning === 'undefined') {
       if (flags.length === 2) {
-        learningLanguage = getLanguageFromFlag(flags[0].classList[0])
-        fromLanguage = getLanguageFromFlag(flags[1].classList[0])
+        learningLanguage = await getLanguageFromFlag(flags[0].classList[0])
+        fromLanguage = await getLanguageFromFlag(flags[1].classList[0])
       } else if (flags.length === 1) {
-        learningLanguage = getLanguageFromFlag(flags[0].classList[0])
+        learningLanguage = await getLanguageFromFlag(flags[0].classList[0])
         fromLanguage = uiLanguage
       } else {
         learningLanguage = 'un'
@@ -186,13 +191,12 @@ async function reorganizeMenu () {
     menuItem.dataset.learning = learningLanguage
     menuItem.dataset.from = fromLanguage
     menuItem.classList.add('learning-course')
-    //  menuItem.style.position = 'relative'
 
     if (fromLanguage in baseLanguages) {
       baseLanguages[fromLanguage].querySelector('._1XE6M').appendChild(menuItem)
     } else {
-      var fromLanguageItem = addFromLanguageItem(fromLanguage, fromLanguage === uiLanguage)
-      let innerMenu = createInnerMenu(oldHeader)
+      var fromLanguageItem = await addFromLanguageItem(fromLanguage, fromLanguage === uiLanguage)
+      let innerMenu = await createInnerMenu(oldHeader)
       baseLanguages[fromLanguage] = innerMenu
       baseLanguages[fromLanguage].querySelector('._1XE6M').appendChild(menuItem)
 
@@ -202,11 +206,8 @@ async function reorganizeMenu () {
   }
 }
 
-// Sets up the menu.
-function routine () {
-  console.log('Duolingo Course Switcher is running...')
+async function routine () {
   reorganizeMenu()
-  console.log('Done.')
 }
 
 if (document.readyState === 'complete') { routine() } else {
