@@ -59,7 +59,7 @@ async function setMenuPosition () {
   this.style.top = (verticalBase - verticalOffset) + 'px'
 }
 
-async function addRule function (stylesheet, rule) {
+async function addRule (stylesheet, rule) {
   stylesheet.insertRule(rule, stylesheet.cssRules.length)
 }
 
@@ -157,7 +157,7 @@ async function reorganizeMenu () {
     let menuItem = courses[i].cloneNode(true)
     courses[i].classList.add('old-menu-item')
     courses[i].querySelector('._1fA14').classList.add('old-level-indicator')
-    
+
     menuItem.addEventListener('click', courses[i].click.bind(courses[i]))
     menuItem.querySelector('._1fA14').classList.add('level-indicator')
     let observer = new window.MutationObserver((mods) => { copyChanges(mods, menuItem) })
