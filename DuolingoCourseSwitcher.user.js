@@ -11,7 +11,7 @@
 
 /*
  * NOTE: Annoyingly, duo.l10n.declared may change with time, which shifts the index for each phrase
- * If the header on the course menu is wrong, that's probably what happened.
+ * If the header on the course menu is wrong, that's probably what happened. I'll keep track of which duo.version's work here.
 */
 console.assert(window.duo.version === 'a74f7a1' || window.duo.version === '4fd6e1b')
 
@@ -59,7 +59,7 @@ async function setMenuPosition () {
   this.style.top = (verticalBase - verticalOffset) + 'px'
 }
 
-async function addRule = function (stylesheet, rule) {
+async function addRule function (stylesheet, rule) {
   stylesheet.insertRule(rule, stylesheet.cssRules.length)
 }
 
