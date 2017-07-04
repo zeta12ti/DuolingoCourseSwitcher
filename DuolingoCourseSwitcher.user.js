@@ -5,7 +5,7 @@
 // @updateURL   https://github.com/zeta12ti/DuolingoCourseSwitcher/raw/master/DuolingoCourseSwitcher.user.js
 // @include     https://*.duolingo.com/*
 // @grant       none
-// @version     1.1.1
+// @version     1.1.2
 // @author      zeta12ti
 // ==/UserScript==
 
@@ -13,7 +13,9 @@
  * NOTE: Annoyingly, duo.l10n.declared may change with time, which shifts the index for each phrase
  * If the header on the course menu is wrong, that's probably what happened. I'll keep track of which duo.version's work here.
 */
-console.assert(window.duo.version === 'a74f7a1' || window.duo.version === '4fd6e1b')
+// things to check with new versions:
+//  duo.l10n.declared[144] is Languages
+console.assert(window.duo.version === 'a74f7a1' || window.duo.version === '4fd6e1b' || window.duo.version === '9a21c9b')
 
 // Language names (in english) - for use with duo.l10n.undeclared
 var languages = {'ar': 'Arabic', 'bn': 'Bengali', 'ca': 'Catalan', 'cs': 'Czech', 'cy': 'Welsh', 'da': 'Danish', 'de': 'German', 'el': 'Greek', 'en': 'English', 'eo': 'Esperanto', 'es': 'Spanish', 'fr': 'French', 'ga': 'Irish', 'gn': 'Guarani (Jopar\u00e1)', 'he': 'Hebrew', 'hi': 'Hindi', 'hu': 'Hungarian', 'id': 'Indonesian', 'it': 'Italian', 'ja': 'Japanese', 'ko': 'Korean', 'nl-NL': 'Dutch', 'no-BO': 'Norwegian (Bokm\u00e5l)', 'pa': 'Punjabi (Gurmukhi)', 'pl': 'Polish', 'pt': 'Portuguese', 'ro': 'Romanian', 'ru': 'Russian', 'sv': 'Swedish', 'sw': 'Swahili', 'ta': 'Tamil', 'te': 'Telugu', 'th': 'Thai', 'tl': 'Tagalog', 'tlh': 'Klingon', 'tr': 'Turkish', 'uk': 'Ukrainian', 'vi': 'Vietnamese', 'zh-CN': 'Chinese'}
