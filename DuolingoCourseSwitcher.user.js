@@ -5,7 +5,7 @@
 // @updateURL   https://github.com/zeta12ti/DuolingoCourseSwitcher/raw/master/DuolingoCourseSwitcher.user.js
 // @include     https://*.duolingo.com/*
 // @grant       none
-// @version     1.1.2
+// @version     1.1.3
 // @author      zeta12ti
 // ==/UserScript==
 
@@ -15,7 +15,7 @@
 */
 // things to check with new versions:
 //  duo.l10n.declared[144] is Languages
-console.assert(window.duo.version === 'a74f7a1' || window.duo.version === '4fd6e1b' || window.duo.version === '9a21c9b')
+console.assert(window.duo.version === 'a74f7a1' || window.duo.version === '4fd6e1b' || window.duo.version === '9a21c9b' || window.duo.version === 'bba440a')
 
 // Language names (in english) - for use with duo.l10n.undeclared
 var languages = {'ar': 'Arabic', 'bn': 'Bengali', 'ca': 'Catalan', 'cs': 'Czech', 'cy': 'Welsh', 'da': 'Danish', 'de': 'German', 'el': 'Greek', 'en': 'English', 'eo': 'Esperanto', 'es': 'Spanish', 'fr': 'French', 'ga': 'Irish', 'gn': 'Guarani (Jopar\u00e1)', 'he': 'Hebrew', 'hi': 'Hindi', 'hu': 'Hungarian', 'id': 'Indonesian', 'it': 'Italian', 'ja': 'Japanese', 'ko': 'Korean', 'nl-NL': 'Dutch', 'no-BO': 'Norwegian (Bokm\u00e5l)', 'pa': 'Punjabi (Gurmukhi)', 'pl': 'Polish', 'pt': 'Portuguese', 'ro': 'Romanian', 'ru': 'Russian', 'sv': 'Swedish', 'sw': 'Swahili', 'ta': 'Tamil', 'te': 'Telugu', 'th': 'Thai', 'tl': 'Tagalog', 'tlh': 'Klingon', 'tr': 'Turkish', 'uk': 'Ukrainian', 'vi': 'Vietnamese', 'zh-CN': 'Chinese'}
@@ -134,6 +134,9 @@ async function addStyleSheet () {
   addRule(stylesheet, 'html[dir="rtl"] .language-submenu {right:90%}')
 }
 
+// TODO: track changes to language name and flag:
+// If the order of the xp changes, Duolingo doesn't switch around the nodes,
+// it changes them in-place
 async function copyChanges (modifications, menuItem) {
   modifications.forEach(mod => {
     if (mod.target.parentNode.classList && mod.target.parentNode.classList.contains('old-level-indicator')) {
