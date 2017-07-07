@@ -21,7 +21,7 @@ console.assert(['a74f7a1', '4fd6e1b', '9a21c9b', 'bba440a', '2f58a09'].indexOf(w
 var languages = {'ar': 'Arabic', 'bn': 'Bengali', 'ca': 'Catalan', 'cs': 'Czech', 'cy': 'Welsh', 'da': 'Danish', 'de': 'German', 'el': 'Greek', 'en': 'English', 'eo': 'Esperanto', 'es': 'Spanish', 'fr': 'French', 'ga': 'Irish', 'gn': 'Guarani (Jopar\u00e1)', 'he': 'Hebrew', 'hi': 'Hindi', 'hu': 'Hungarian', 'id': 'Indonesian', 'it': 'Italian', 'ja': 'Japanese', 'ko': 'Korean', 'nl-NL': 'Dutch', 'no-BO': 'Norwegian (Bokm\u00e5l)', 'pa': 'Punjabi (Gurmukhi)', 'pl': 'Polish', 'pt': 'Portuguese', 'ro': 'Romanian', 'ru': 'Russian', 'sv': 'Swedish', 'sw': 'Swahili', 'ta': 'Tamil', 'te': 'Telugu', 'th': 'Thai', 'tl': 'Tagalog', 'tlh': 'Klingon', 'tr': 'Turkish', 'uk': 'Ukrainian', 'vi': 'Vietnamese', 'zh-CN': 'Chinese'}
 
 async function getLanguageString (languageCode) {
-  return window.duo.l10n.undeclared[languages[languageCode] + '||capitalized'] || window.duo.l10n.undeclared[languages[languageCode]] || languages[languageCode] || 'Unknown'
+  return window.duo.l10n.undeclared[languages[languageCode]] || window.duo.l10n.undeclared[languages[languageCode] + '||capitalized'] || languages[languageCode] || 'Unknown'
 }
 
 // language flags -
