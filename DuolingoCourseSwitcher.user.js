@@ -1,21 +1,22 @@
 // ==UserScript==
 // @name        Duolingo Course Switcher (New Site)
-// @description Simplifies switching between courses that use different interface language (i.e., base language, the language from which you learn).
+// @description Simplifies switching between courses that use different interface languages (i.e., base language, the language from which you learn).
 // @namespace   https://github.com/zeta12ti/DuolingoCourseSwitcher
 // @updateURL   https://github.com/zeta12ti/DuolingoCourseSwitcher/raw/master/DuolingoCourseSwitcher.user.js
 // @include     https://*.duolingo.com/*
 // @grant       none
-// @version     1.1.3
+// @version     1.1.4
 // @author      zeta12ti
 // ==/UserScript==
 
 /*
  * NOTE: Annoyingly, duo.l10n.declared may change with time, which shifts the index for each phrase
- * If the header on the course menu is wrong, that's probably what happened. I'll keep track of which duo.version's work here.
+ * If the header on the course menu is wrong, that's probably what happened. I'll keep track of which duo.versions work here.
 */
 // things to check with new versions:
-//  duo.l10n.declared[144] is Languages
-console.assert(['a74f7a1', '4fd6e1b', '9a21c9b', 'bba440a', '2f58a09'].indexOf(window.duo.version) >= 0)
+//  duo.l10n.declared[146] is Languages
+//  duo.l10n.undeclared[languages[languageCode]] is correct
+console.assert(~['6443752'].indexOf(window.duo.version))
 
 // Language names (in english) - for use with duo.l10n.undeclared
 var languages = {'ar': 'Arabic', 'bn': 'Bengali', 'ca': 'Catalan', 'cs': 'Czech', 'cy': 'Welsh', 'da': 'Danish', 'de': 'German', 'el': 'Greek', 'en': 'English', 'eo': 'Esperanto', 'es': 'Spanish', 'fr': 'French', 'ga': 'Irish', 'gn': 'Guarani (Jopar\u00e1)', 'he': 'Hebrew', 'hi': 'Hindi', 'hu': 'Hungarian', 'id': 'Indonesian', 'it': 'Italian', 'ja': 'Japanese', 'ko': 'Korean', 'nl-NL': 'Dutch', 'no-BO': 'Norwegian (Bokm\u00e5l)', 'pa': 'Punjabi (Gurmukhi)', 'pl': 'Polish', 'pt': 'Portuguese', 'ro': 'Romanian', 'ru': 'Russian', 'sv': 'Swedish', 'sw': 'Swahili', 'ta': 'Tamil', 'te': 'Telugu', 'th': 'Thai', 'tl': 'Tagalog', 'tlh': 'Klingon', 'tr': 'Turkish', 'uk': 'Ukrainian', 'vi': 'Vietnamese', 'zh-CN': 'Chinese'}
