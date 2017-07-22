@@ -16,7 +16,7 @@
 // things to check with new versions:
 //  duo.l10n.declared[146] is Languages
 //  duo.l10n.undeclared[languages[languageCode]] is correct
-console.assert(['6443752', '0f37dfe', 'ef39b02', '85c97b3'].includes(window.duo.version))
+console.assert(['6443752', '0f37dfe', 'ef39b02', '85c97b3', '135a312'].includes(window.duo.version))
 
 // Language names (in english) - for use with duo.l10n.undeclared
 var languages = {'ar': 'Arabic', 'bn': 'Bengali', 'ca': 'Catalan', 'cs': 'Czech', 'cy': 'Welsh', 'da': 'Danish', 'de': 'German', 'el': 'Greek', 'en': 'English', 'eo': 'Esperanto', 'es': 'Spanish', 'fr': 'French', 'ga': 'Irish', 'gn': 'Guarani (Jopar\u00e1)', 'he': 'Hebrew', 'hi': 'Hindi', 'hu': 'Hungarian', 'id': 'Indonesian', 'it': 'Italian', 'ja': 'Japanese', 'ko': 'Korean', 'nl-NL': 'Dutch', 'no-BO': 'Norwegian (Bokm\u00e5l)', 'pa': 'Punjabi (Gurmukhi)', 'pl': 'Polish', 'pt': 'Portuguese', 'ro': 'Romanian', 'ru': 'Russian', 'sv': 'Swedish', 'sw': 'Swahili', 'ta': 'Tamil', 'te': 'Telugu', 'th': 'Thai', 'tl': 'Tagalog', 'tlh': 'Klingon', 'tr': 'Turkish', 'uk': 'Ukrainian', 'vi': 'Vietnamese', 'zh-CN': 'Chinese'}
@@ -157,7 +157,7 @@ async function reorganizeMenu () {
   addStyleSheet()
 
   var oldHeader = document.querySelector('._2PurW').innerHTML
-  document.querySelector('._2PurW').innerHTML = '<h6>' + window.duo.l10n.declared[144] + '</h6>' // Languages
+  document.querySelector('._2PurW').innerHTML = '<h6>' + window.duo.l10n.declared[146] + '</h6>' // Languages
 
   for (var i = 0, len = courses.length; i < len; i++) {
     let menuItem = courses[i].cloneNode(true)
