@@ -5,7 +5,7 @@
 // @updateURL   https://github.com/zeta12ti/DuolingoCourseSwitcher/raw/master/DuolingoCourseSwitcher.user.js
 // @include     https://*.duolingo.com/*
 // @grant       none
-// @version     1.1.8
+// @version     1.1.9
 // @author      zeta12ti
 // ==/UserScript==
 
