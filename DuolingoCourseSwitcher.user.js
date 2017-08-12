@@ -5,7 +5,7 @@
 // @updateURL   https://github.com/zeta12ti/DuolingoCourseSwitcher/raw/master/DuolingoCourseSwitcher.user.js
 // @include     https://*.duolingo.com/*
 // @grant       none
-// @version     1.1.9
+// @version     1.1.10
 // @author      zeta12ti
 // ==/UserScript==
 
@@ -14,7 +14,7 @@
  * If the header on the course menu is wrong, that's probably what happened. I'll keep track of which duo.versions work here.
 */
 // things to check with new versions:
-//  duo.l10n.declared[146] is Languages
+//  duo.l10n.declared[148] is Languages
 //  duo.l10n.undeclared[languages[languageCode]] is correct
 // console.assert(['0beed7c'].includes(window.duo.version))
 
@@ -157,7 +157,7 @@ async function reorganizeMenu () {
   addStyleSheet()
 
   var oldHeader = document.querySelector('._2PurW').innerHTML
-  document.querySelector('._2PurW').innerHTML = '<h6>' + window.duo.l10n.declared[147] + '</h6>' // Languages
+  document.querySelector('._2PurW').innerHTML = '<h6>' + window.duo.l10n.declared[148] + '</h6>' // Languages
 
   for (var i = 0, len = courses.length; i < len; i++) {
     let menuItem = courses[i].cloneNode(true)
